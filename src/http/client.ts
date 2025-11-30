@@ -43,16 +43,17 @@ export function createHttpClient(options: HttpClientOptions): {
      */
     instance.interceptors.request.use(
         (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-            const authConfig: InternalAxiosRequestConfig<unknown> & AuthRequestConfig<unknown> = config as InternalAuthConfig;
+            const authConfig: InternalAxiosRequestConfig<unknown> & AuthRequestConfig<unknown> =
+                config as InternalAuthConfig;
 
             if (authConfig.skipAuth) {
                 return authConfig;
             }
 
-            const url: string = authConfig.url ?? '';
+            const url: string = authConfig.url ?? "";
 
             // Only protect these backend routes
-            const isProtected: boolean = url.startsWith('/platform-api') || url.startsWith('/tenant-api');
+            const isProtected: boolean = url.startsWith("/platform-api") || url.startsWith("/tenant-api");
 
             if (!isProtected) {
                 return authConfig;
@@ -61,7 +62,7 @@ export function createHttpClient(options: HttpClientOptions): {
             const token: string | null = tokenStorage.getAccessToken();
             if (token) {
                 const headers: AxiosHeaders = AxiosHeaders.from(authConfig.headers ?? {});
-                headers.set('Authorization', `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${token}`);
                 authConfig.headers = headers;
             }
 
@@ -69,7 +70,6 @@ export function createHttpClient(options: HttpClientOptions): {
         },
         (error) => Promise.reject(error),
     );
-
 
     /**
      * RESPONSE INTERCEPTOR
