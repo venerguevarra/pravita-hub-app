@@ -12,12 +12,13 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "openapi:generate": "openapi-generator-cli generate -i openapi/backend.yaml -g typescript-axios -o src/api --additional-properties=useSingleRequestParameter=true"
+    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {
     "@mantine/core": "^8.3.9",
     "@mantine/hooks": "^8.3.9",
     "@mantine/notifications": "^8.3.9",
+    "axios": "^1.13.2",
     "pravita-react-ds": "github:venerguevarra/pravita-react-ds#v0.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

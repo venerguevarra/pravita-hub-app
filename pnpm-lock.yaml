@@ -17,6 +17,9 @@ importers:
       '@mantine/notifications':
         specifier: ^8.3.9
         version: 8.3.9(@mantine/core@8.3.9(@mantine/hooks@8.3.9(react@19.2.0))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@mantine/hooks@8.3.9(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      axios:
+        specifier: ^1.13.2
+        version: 1.13.2
       pravita-react-ds:
         specifier: github:venerguevarra/pravita-react-ds#v0.0.2
         version: https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/e130034824a6b99c85ca2876010de619510d21ad(@types/react@19.2.7)
