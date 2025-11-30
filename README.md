@@ -327,7 +327,3 @@ Typical local workflow:
 - Tenant-based theming for Hub using DS tokens
 - Central auth and navigation components
 - CI checks (lint, tests) on push / PR
-
----
-
-Made to consume the Pravita React Design System and act as the main UI shell for Pravita products.
