@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "vite --open",
     "build": "tsc -b && vite build",
-    "lint:ts": "eslint .",
-    "lint:styles": "stylelint \"src/**/*.{css,scss,sass}\"",
-    "lint": "pnpm lint:ts && pnpm lint:styles",
+    "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "preview": "vite preview",

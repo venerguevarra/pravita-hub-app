@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 /* Root main layout: full-screen app shell */
 .main-layout {
@@ -76,7 +76,9 @@
     font-size: 0.9rem;
     color: $color-fg-muted;
     cursor: pointer;
-    transition: background-color 120ms ease, color 120ms ease;
+    transition:
+        background-color 120ms ease,
+        color 120ms ease;
 }
 
 .main-header-menu-trigger:hover {
@@ -141,7 +143,9 @@
     color: $color-fg-muted;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 120ms ease, color 120ms ease;
+    transition:
+        background-color 120ms ease,
+        color 120ms ease;
 }
 
 .main-nav-link-dot {

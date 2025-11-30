@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 function createMatchMedia(matches: boolean) {
     return (query: string): MediaQueryList =>
@@ -12,16 +12,14 @@ function createMatchMedia(matches: boolean) {
             removeListener: () => {
                 // kept for backwards compatibility
             },
-            addEventListener: () => {
-            },
-            removeEventListener: () => {
-            },
+            addEventListener: () => {},
+            removeEventListener: () => {},
             dispatchEvent: () => false,
-        } as unknown as MediaQueryList);
+        }) as unknown as MediaQueryList;
 }
 
-if (typeof window !== 'undefined' && !window.matchMedia) {
-    Object.defineProperty(window, 'matchMedia', {
+if (typeof window !== "undefined" && !window.matchMedia) {
+    Object.defineProperty(window, "matchMedia", {
         writable: true,
         value: createMatchMedia(false),
     });

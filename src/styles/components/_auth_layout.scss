@@ -1,4 +1,4 @@
-@use '../variables' as *;
+@use "../variables" as *;
 
 .auth-layout {
     min-height: 100vh;
@@ -22,15 +22,10 @@
     }
 
     &::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: 0;
-        background-image: linear-gradient(
-                        to bottom,
-                        rgba(0, 0, 0, 0.15),
-                        rgba(0, 0, 0, 0.45)
-        ),
-        url('/loginbg.jpg');
+        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.45)), url("/loginbg.jpg");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;

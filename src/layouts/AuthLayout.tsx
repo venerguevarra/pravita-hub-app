@@ -1,10 +1,10 @@
-import type React from 'react';
+import type React from "react";
 
 type AuthLayoutProps = {
     children: React.ReactNode;
 };
 
-export function AuthLayout({children}: AuthLayoutProps): React.JSX.Element {
+export function AuthLayout({ children }: AuthLayoutProps): React.JSX.Element {
     return (
         <div className="auth-layout">
             {/* Left visual / marketing panel */}
@@ -24,11 +24,9 @@ export function AuthLayout({children}: AuthLayoutProps): React.JSX.Element {
             {/* Right login form panel */}
             <section className="auth-panel--form">
                 <div className="auth-panel-form-inner">
-                    <header style={{marginBottom: '1.5rem'}}>
+                    <header style={{ marginBottom: "1.5rem" }}>
                         <h2 className="auth-panel-form-header-title">Pravita Hub</h2>
-                        <p className="auth-panel-form-header-subtitle">
-                            Welcome back! Please sign in to your account.
-                        </p>
+                        <p className="auth-panel-form-header-subtitle">Welcome back! Please sign in to your account.</p>
                     </header>
                     {children}
                 </div>
