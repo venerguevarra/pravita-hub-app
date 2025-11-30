@@ -18,8 +18,8 @@ importers:
         specifier: ^8.3.9
         version: 8.3.9(@mantine/core@8.3.9(@mantine/hooks@8.3.9(react@19.2.0))(@types/react@19.2.6)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(@mantine/hooks@8.3.9(react@19.2.0))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       pravita-react-ds:
-        specifier: github:venerguevarra/pravita-react-ds
-        version: https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/402445c32a732dedc5e96ee549a3adcc47e31dae(@types/react@19.2.6)
+        specifier: github:venerguevarra/pravita-react-ds#v0.0.1
+        version: https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/172229e61cb6e2994e56b101290e543c458cbde3(@types/react@19.2.6)
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -1044,9 +1044,9 @@ packages:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
-  pravita-react-ds@https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/402445c32a732dedc5e96ee549a3adcc47e31dae:
-    resolution: {tarball: https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/402445c32a732dedc5e96ee549a3adcc47e31dae}
-    version: 1.0.0
+  pravita-react-ds@https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/172229e61cb6e2994e56b101290e543c458cbde3:
+    resolution: {tarball: https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/172229e61cb6e2994e56b101290e543c458cbde3}
+    version: 0.0.1
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -2281,7 +2281,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  pravita-react-ds@https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/402445c32a732dedc5e96ee549a3adcc47e31dae(@types/react@19.2.6):
+  pravita-react-ds@https://codeload.github.com/venerguevarra/pravita-react-ds/tar.gz/172229e61cb6e2994e56b101290e543c458cbde3(@types/react@19.2.6):
     dependencies:
       '@mantine/core': 8.3.9(@mantine/hooks@8.3.9(react@19.2.0))(@types/react@19.2.6)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mantine/hooks': 8.3.9(react@19.2.0)
