@@ -1,4 +1,3 @@
-// eslint.config.js
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -8,8 +7,8 @@ import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-    // Ignore build output
-    globalIgnores(['dist', 'node_modules']),
+    // Ignore build output + src/api
+    globalIgnores(['dist', 'node_modules', 'src/api/**']),
 
     // Base JS rules
     js.configs.recommended,

@@ -1,0 +1,2465 @@
+openapi: 3.1.0
+info:
+  title: Pravita Hub API
+  version: v1
+servers:
+- url: http://localhost:9001
+  description: Generated server url
+tags:
+- name: Users
+  description: User management endpoints
+- name: Roles
+  description: Manage roles and their associated modules
+- name: User Activation Code
+  description: Manage user activation code
+- name: Tenant Roles
+  description: Manage tenant-specific roles
+- name: Registration
+  description: Self-registration endpoint
+- name: JWT Decoder
+  description: Decode JWT token information
+- name: GTG
+  description: Good To Go endpoint
+- name: System Modules
+  description: Manage roles and their modules
+- name: User Roles
+  description: Assign roles to a user
+- name: Tenant Membership
+  description: Manage tenant memberships
+- name: Tenant Role Modules
+  description: Assign and remove modules for a tenant role
+- name: Tenants
+  description: Manage tenants
+paths:
+  /tenant-api/tenants/{tenantId}/roles/{systemId}:
+    get:
+      tags:
+      - Tenant Roles
+      summary: Get a tenant role by systemId
+      description: Retrieve a tenant role by its systemId.
+      operationId: getTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: TenantRole systemId
+        required: true
+        schema:
+          type: string
+        example: 019aa871-001b-74b8-8e07-f0d9d5898485
+      responses:
+        "200":
+          description: Tenant role found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantRoleDto"
+        "404":
+          description: Tenant role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - Tenant Roles
+      summary: Update an existing tenant role
+      description: Update an existing tenant role identified by its systemId.
+      operationId: updateTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: TenantRole systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantRoleDto"
+        required: true
+      responses:
+        "200":
+          description: Tenant role updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantRoleDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{systemId}:
+    get:
+      tags:
+      - Tenants
+      summary: Get tenant by systemId
+      description: Retrieve a tenant by its systemId.
+      operationId: getTenant
+      parameters:
+      - name: systemId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+        example: 019aa871-001b-74b8-8e07-f0d9d5898485
+      responses:
+        "200":
+          description: Tenant found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantDto"
+        "404":
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - Tenants
+      summary: Update an existing tenant
+      description: Update an existing tenant identified by its systemId.
+      operationId: updateTenant
+      parameters:
+      - name: systemId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantDto"
+        required: true
+      responses:
+        "200":
+          description: Tenant updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /platform-api/system-modules/{systemId}:
+    get:
+      tags:
+      - System Modules
+      summary: Get a module by systemId
+      description: Get a single module by its systemId.
+      operationId: getModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+        example: 019aa871-001b-74b8-8e07-f0d9d5898485
+      responses:
+        "200":
+          description: Module found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModuleDto"
+        "404":
+          description: Module not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+    put:
+      tags:
+      - System Modules
+      summary: Update an existing module
+      description: Updates an existing module identified by its systemId.
+      operationId: updateModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Module payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModuleDto"
+        required: true
+      responses:
+        "200":
+          description: Module updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Module not found
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+  /platform-api/system-modules/{systemId}/actions/{actionSystemId}:
+    put:
+      tags:
+      - System Modules
+      summary: Update an existing action of a module
+      description: Update an existing module action identified by systemId within
+        the given module.
+      operationId: updateActionForModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      - name: actionSystemId
+        in: path
+        description: Module action systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Module action data to update
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModuleActionDto"
+        required: true
+      responses:
+        "200":
+          description: Action updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "400":
+          description: Bad request
+        "404":
+          description: Module or action not found
+        "500":
+          description: Internal server error
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - System Modules
+      summary: Remove an action from a module
+      description: Remove an existing action from the module identified by systemId.
+      operationId: removeActionFromModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      - name: actionSystemId
+        in: path
+        description: Module action systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Action removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Module or action not found
+        "500":
+          description: Internal server error
+      security:
+      - bearerAuth: []
+  /platform-api/roles/{systemId}:
+    get:
+      tags:
+      - Roles
+      summary: Get a role by system ID
+      description: "Returns the role if it exists, otherwise a 404."
+      operationId: getRole
+      parameters:
+      - name: systemId
+        in: path
+        description: The role's system identifier (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4e0f3d2e-4f38-4c12-8a9b-8db9056c6b87
+      responses:
+        "200":
+          description: Role found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "404":
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+    put:
+      tags:
+      - Roles
+      summary: Update an existing role
+      description: Validates and updates fields of an existing role.
+      operationId: updateRole
+      parameters:
+      - name: systemId
+        in: path
+        description: The role's system identifier (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4e0f3d2e-4f38-4c12-8a9b-8db9056c6b87
+      requestBody:
+        description: Updated role payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleDto"
+            examples:
+              UpdateRoleExample:
+                description: UpdateRoleExample
+                value:
+                  code: ROLE_ADMIN
+                  name: Admin
+        required: true
+      responses:
+        "200":
+          description: Role updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+              examples:
+                UpdatedRoleExample:
+                  description: UpdatedRoleExample
+                  value:
+                    code: ROLE_ADMIN
+                    name: Admin
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+    delete:
+      tags:
+      - Roles
+      summary: Delete a role by system ID
+      description: Soft-deactivates a role. Returns 204 if successful.
+      operationId: deleteRole
+      parameters:
+      - name: systemId
+        in: path
+        description: The role's system identifier (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4e0f3d2e-4f38-4c12-8a9b-8db9056c6b87
+      responses:
+        "204":
+          description: Role deleted (deactivated)
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /user-activation-code/resend:
+    post:
+      tags:
+      - User Activation Code
+      summary: Resend activation code by email
+      description: "Invalidates any previously unused code for the user, issues a\
+        \ fresh code, and emails it."
+      operationId: resend
+      requestBody:
+        description: User email payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserResendActivationCodeEmailDto"
+            examples:
+              ResendByEmail:
+                description: ResendByEmail
+                value:
+                  email: alex@example.com
+        required: true
+      responses:
+        "202":
+          description: New code issued and email queued
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Invalid input
+        "404":
+          description: User not found
+  /user-activation-code/activate:
+    post:
+      tags:
+      - User Activation Code
+      summary: Verify activation code and activate account
+      description: Checks the 6-character code (case-insensitive) and activates the
+        user if valid and unexpired.
+      operationId: activate
+      requestBody:
+        description: Email + 6-character activation code
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCodeActivationDto"
+            examples:
+              Activate:
+                description: Activate
+                value:
+                  email: alex@example.com
+                  code: ABC123
+        required: true
+      responses:
+        "200":
+          description: Account activated
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Invalid code format
+        "401":
+          description: Invalid or expired code
+        "404":
+          description: User not found
+  /tenant-api/tenants:
+    get:
+      tags:
+      - Tenants
+      summary: List active tenants
+      operationId: getActiveUsers
+      parameters:
+      - name: pageRequest
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of tenants
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantDto"
+    post:
+      tags:
+      - Tenants
+      summary: Create a tenant
+      description: Create a new tenant.
+      operationId: createTenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantDto"
+        required: true
+      responses:
+        "200":
+          description: Tenant created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/roles:
+    get:
+      tags:
+      - Tenant Roles
+      summary: Get a page of tenant roles (active)
+      description: List active tenant roles with pagination.
+      operationId: getTenantRoles
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      - name: pageRequest
+        in: query
+        description: Pageable
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Tenant roles retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TenantRoleDto"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Tenant Roles
+      summary: Create a tenant role
+      description: Create a new tenant role.
+      operationId: createTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantRoleDto"
+        required: true
+      responses:
+        "200":
+          description: Tenant role created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantRoleDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/roles/{systemId}/deactivate:
+    post:
+      tags:
+      - Tenant Roles
+      summary: Deactivate a tenant role
+      description: Deactivate a tenant role by its systemId.
+      operationId: deactivateTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: TenantRole systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Tenant role deactivated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Tenant role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/roles/{systemId}/activate:
+    post:
+      tags:
+      - Tenant Roles
+      summary: Activate a tenant role
+      description: Activate a tenant role by its systemId.
+      operationId: activateTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: TenantRole systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Tenant role activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Tenant role not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/roles/{roleId}:
+    post:
+      tags:
+      - Tenant Role Modules
+      summary: Assign module to tenant role
+      description: Adds a single module to the specified tenant role.
+      operationId: addModuleToTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId (UUID)
+        required: true
+        schema:
+          type: string
+      - name: roleId
+        in: path
+        description: Role systemId (UUID)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdDto"
+        required: true
+      responses:
+        "200":
+          description: Module assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant/role/module not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - Tenant Role Modules
+      summary: Remove module from tenant role
+      description: Removes a single module from the specified tenant role.
+      operationId: removeModuleFromTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId (UUID)
+        required: true
+        schema:
+          type: string
+      - name: roleId
+        in: path
+        description: Role systemId (UUID)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdDto"
+        required: true
+      responses:
+        "200":
+          description: Module removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant/role/module not found or not assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/roles/{roleId}/modules:
+    post:
+      tags:
+      - Tenant Role Modules
+      summary: Assign multiple modules to tenant role
+      description: Adds multiple modules to the specified tenant role.
+      operationId: addModulesToTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId (UUID)
+        required: true
+        schema:
+          type: string
+      - name: roleId
+        in: path
+        description: Role systemId (UUID)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdsDto"
+        required: true
+      responses:
+        "200":
+          description: Modules assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant/role/module not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - Tenant Role Modules
+      summary: Remove multiple modules from tenant role
+      description: Removes multiple modules from the specified tenant role.
+      operationId: removeModulesFromTenantRole
+      parameters:
+      - name: tenantId
+        in: path
+        description: Tenant systemId (UUID)
+        required: true
+        schema:
+          type: string
+      - name: roleId
+        in: path
+        description: Role systemId (UUID)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdsDto"
+        required: true
+      responses:
+        "200":
+          description: Modules removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "400":
+          description: Invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: Tenant/role/module not found or not assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{tenantId}/members/{userId}:
+    post:
+      tags:
+      - Tenant Membership
+      summary: Add user to tenant
+      operationId: add
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Tenant Membership
+      summary: Remove user from tenant
+      operationId: remove
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: hardDelete
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /tenant-api/tenants/{systemId}/deactivate:
+    post:
+      tags:
+      - Tenants
+      summary: Deactivate a tenant
+      description: Deactivate a tenant by its systemId.
+      operationId: deactivateTenant
+      parameters:
+      - name: systemId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Tenant deactivated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /tenant-api/tenants/{systemId}/activate:
+    post:
+      tags:
+      - Tenants
+      summary: Activate a tenant
+      description: Activate a tenant by its systemId.
+      operationId: activateTenant
+      parameters:
+      - name: systemId
+        in: path
+        description: Tenant systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Tenant activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Tenant not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+      security:
+      - bearerAuth: []
+  /register:
+    post:
+      tags:
+      - Registration
+      summary: Self-register a user
+      operationId: register
+      requestBody:
+        description: Registration payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegistrationDto"
+        required: true
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "409":
+          description: Conflict (duplicate)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /refresh:
+    post:
+      tags:
+      - Authentication
+      summary: Refresh access token using refreshToken cookie
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: X-Refresh-Token
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationTokenDto"
+  /platform-api/users/deactivate:
+    post:
+      tags:
+      - Users
+      summary: Deactivate a user
+      description: Deactivates a user account using the provided activation details.
+      operationId: deactivateUser
+      requestBody:
+        description: Deactivation payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserActivationDto"
+        required: true
+      responses:
+        "200":
+          description: User activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/users/activate:
+    post:
+      tags:
+      - Users
+      summary: Activate a user
+      description: Activates a user account using the provided activation details.
+      operationId: activateUser
+      requestBody:
+        description: Activation payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserActivationDto"
+        required: true
+      responses:
+        "200":
+          description: User activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/users/actions/assign-roles:
+    post:
+      tags:
+      - User Roles
+      summary: Assign roles to a user
+      operationId: assignRoles
+      requestBody:
+        description: Role assignment payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRoleAssignmentDto"
+        required: true
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: User or related entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/system-modules:
+    get:
+      tags:
+      - System Modules
+      summary: Get a page of modules (active + inactive)
+      description: List modules with pagination.
+      operationId: getModules
+      parameters:
+      - name: pageRequest
+        in: query
+        description: Pageable
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of modules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+    post:
+      tags:
+      - System Modules
+      summary: Create a system module
+      description: Create a new system module.
+      operationId: createModule
+      requestBody:
+        description: Module payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModuleDto"
+        required: true
+      responses:
+        "201":
+          description: Module created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/system-modules/{systemId}/deactivate:
+    post:
+      tags:
+      - System Modules
+      summary: Deactivate a module
+      description: Deactivate a module by systemId.
+      operationId: deactivateModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Module deactivated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Module not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/system-modules/{systemId}/activate:
+    post:
+      tags:
+      - System Modules
+      summary: Activate a module
+      description: Activate a previously deactivated module by systemId.
+      operationId: activateModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Module activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "404":
+          description: Module not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/system-modules/{systemId}/actions:
+    post:
+      tags:
+      - System Modules
+      summary: Add an action to a module
+      description: Assign a new action to the module identified by systemId.
+      operationId: addActionToModule
+      parameters:
+      - name: systemId
+        in: path
+        description: Module systemId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Module action to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModuleActionDto"
+        required: true
+      responses:
+        "200":
+          description: Action added successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerResponse"
+        "400":
+          description: Bad request
+        "404":
+          description: Module not found
+        "500":
+          description: Internal server error
+      security:
+      - bearerAuth: []
+  /platform-api/roles:
+    get:
+      tags:
+      - Roles
+      summary: Get all roles
+      description: Fetches a list of all roles.
+      operationId: getAllRoles
+      responses:
+        "200":
+          description: Roles retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RoleDto"
+              examples:
+                RolesExample:
+                  description: RolesExample
+                  value:
+                  - code: ROLE_ADMIN
+                    name: Administrator
+                  - code: ROLE_USER
+                    name: User
+        "204":
+          description: No roles found
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+      - Roles
+      summary: Create a new role
+      description: Validates the payload and creates a new role.
+      operationId: createRole
+      requestBody:
+        description: Role payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleDto"
+            examples:
+              CreateRoleExample:
+                description: CreateRoleExample
+                value:
+                  code: ROLE_ADMIN
+                  name: Administrator
+        required: true
+      responses:
+        "200":
+          description: Role created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+              examples:
+                CreatedRoleExample:
+                  description: CreatedRoleExample
+                  value:
+                    code: ROLE_ADMIN
+                    name: Administrator
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/roles/{systemId}/modules:
+    post:
+      tags:
+      - Roles
+      summary: Assign modules to a role
+      description: Adds the provided modules (by system ID) to the role.
+      operationId: assignModulesToRole
+      parameters:
+      - name: systemId
+        in: path
+        description: The role's system identifier (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4e0f3d2e-4f38-4c12-8a9b-8db9056c6b87
+      requestBody:
+        description: List of module UUIDs to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModulesIdListDto"
+            examples:
+              AssignModulesExample:
+                description: AssignModulesExample
+                value:
+                  moduleSystemIds:
+                  - 3f1a6a10-0a52-4f1e-8d98-9d8b48e51b6d
+                  - 0e0a2a28-2b1e-4d6d-8f2a-5c3f9bde9a45
+        required: true
+      responses:
+        "200":
+          description: Modules assigned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "404":
+          description: Role or one of the modules not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+    delete:
+      tags:
+      - Roles
+      summary: Remove modules from a role
+      description: Removes the provided modules from the role.
+      operationId: removeModulesFromRole
+      parameters:
+      - name: systemId
+        in: path
+        description: The role's system identifier (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 4e0f3d2e-4f38-4c12-8a9b-8db9056c6b87
+      requestBody:
+        description: List of module UUIDs to remove
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ModulesIdListDto"
+            examples:
+              RemoveModulesExample:
+                description: RemoveModulesExample
+                value:
+                  moduleSystemIds:
+                  - 3f1a6a10-0a52-4f1e-8d98-9d8b48e51b6d
+        required: true
+      responses:
+        "200":
+          description: Modules removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDto"
+        "404":
+          description: Role or one of the modules not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /authenticate:
+    post:
+      tags:
+      - Authentication
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /tenant-api/tenants/{tenantId}/members:
+    get:
+      tags:
+      - Tenant Membership
+      summary: List active users
+      operationId: getTenantUsers
+      parameters:
+      - name: tenantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: pageRequest
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of users
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /tenant-api/tenants/actions/list:
+    get:
+      tags:
+      - Tenants
+      summary: List all users (active + inactive)
+      operationId: getAllUsers
+      parameters:
+      - name: pageRequest
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantDto"
+  /platform-api/users:
+    get:
+      tags:
+      - Users
+      summary: List active users
+      operationId: getActiveUsers_1
+      parameters:
+      - name: pageRequest
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /platform-api/users/{systemId}:
+    get:
+      tags:
+      - Users
+      summary: Fetch a user by system id
+      operationId: getUserBySystemId
+      parameters:
+      - name: systemId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/users/actions/search-by-email:
+    get:
+      tags:
+      - Users
+      summary: Search user by email
+      operationId: getUserByEmail
+      parameters:
+      - name: email
+        in: query
+        description: Email to search
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+  /platform-api/users/actions/list:
+    get:
+      tags:
+      - Users
+      summary: List all users (active + inactive)
+      operationId: getAllUsers_1
+      parameters:
+      - name: pageRequest
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/PageDto"
+      responses:
+        "200":
+          description: Page of users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+  /gtg:
+    get:
+      tags:
+      - GTG
+      operationId: gtg
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/StatusDto"
+  /api/token/decode:
+    get:
+      tags:
+      - JWT Decoder
+      operationId: decode
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties: {}
+  /platform-api/users/actions/remove-roles:
+    delete:
+      tags:
+      - User Roles
+      summary: Remove roles from a user
+      operationId: removeRoles
+      requestBody:
+        description: Role assignment payload
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRoleAssignmentDto"
+        required: true
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDto"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "404":
+          description: User or related entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiErrorResponse"
+components:
+  schemas:
+    TenantRoleDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        tenantSystemId:
+          type: string
+          maxLength: 50
+          minLength: 0
+        tenantName:
+          type: string
+          maxLength: 150
+          minLength: 0
+        roleSystemId:
+          type: string
+          maxLength: 50
+          minLength: 0
+        roleCode:
+          type: string
+          maxLength: 50
+          minLength: 0
+        roleName:
+          type: string
+          maxLength: 150
+          minLength: 0
+        isActive:
+          type: boolean
+      required:
+      - roleSystemId
+      - tenantSystemId
+    ApiErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationMessage"
+          uniqueItems: true
+    ValidationMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        field:
+          type: string
+        rejectedValue: {}
+    TenantDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        name:
+          type: string
+          maxLength: 100
+          minLength: 0
+        code:
+          type: string
+          maxLength: 100
+          minLength: 0
+        description:
+          type: string
+          maxLength: 150
+          minLength: 0
+        isActive:
+          type: boolean
+        domain:
+          type: string
+          maxLength: 150
+          minLength: 0
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+      required:
+      - code
+      - name
+    ModuleDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        code:
+          type: string
+          maxLength: 50
+          minLength: 0
+        name:
+          type: string
+          maxLength: 150
+          minLength: 0
+        description:
+          type: string
+          maxLength: 100
+          minLength: 0
+        updatedDate:
+          type: string
+          format: date-time
+        createdDate:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+      required:
+      - code
+      - name
+    ServerResponse: {}
+    ModuleActionDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        code:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isActive:
+          type: boolean
+      required:
+      - code
+      - name
+    RoleDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        systemRole:
+          type: boolean
+    UserResendActivationCodeEmailDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Login email address
+          example: alex@example.com
+          minLength: 1
+      required:
+      - email
+    UserCodeActivationDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Login email address
+          example: alex@example.com
+          minLength: 1
+        code:
+          type: string
+          description: 6-character activation code (letters and digits)
+          example: ABC123
+          maxLength: 6
+          minLength: 6
+          pattern: "^[A-Za-z0-9]{6}$"
+      required:
+      - code
+      - email
+    IdDto:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+      required:
+      - id
+    IdsDto:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+    UserRegistrationDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        middleName:
+          type: string
+        rawPassword:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+      required:
+      - email
+      - firstName
+      - lastName
+      - rawPassword
+    UserDto:
+      type: object
+      properties:
+        systemId:
+          type: string
+        email:
+          type: string
+        active:
+          type: boolean
+    AuthenticationTokenDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+        accessExpiresAt:
+          type: integer
+          format: int64
+        refreshToken:
+          type: string
+        refreshExpiresAt:
+          type: integer
+          format: int64
+    UserActivationDto:
+      type: object
+      properties:
+        userSystemId:
+          type: string
+          minLength: 1
+      required:
+      - userSystemId
+    UserRoleAssignmentDto:
+      type: object
+      properties:
+        userSystemId:
+          type: string
+          minLength: 1
+        roleCodes:
+          type: array
+          items:
+            type: string
+          minItems: 1
+      required:
+      - roleCodes
+      - userSystemId
+    MembershipVersion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        tenant:
+          $ref: "#/components/schemas/Tenant"
+        version:
+          type: integer
+          format: int64
+    Module:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+          uniqueItems: true
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModuleAction"
+          uniqueItems: true
+    ModuleAction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        module:
+          $ref: "#/components/schemas/Module"
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    PersonalInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleInitial:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        stateProvince:
+          type: string
+        postalCode:
+          type: string
+        countryCode:
+          type: string
+        phoneNumber:
+          type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          uniqueItems: true
+        modules:
+          type: array
+          items:
+            $ref: "#/components/schemas/Module"
+          uniqueItems: true
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        domain:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/User"
+          uniqueItems: true
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/TenantRole"
+          uniqueItems: true
+        membershipVersions:
+          type: array
+          items:
+            $ref: "#/components/schemas/MembershipVersion"
+          uniqueItems: true
+    TenantRole:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        tenant:
+          $ref: "#/components/schemas/Tenant"
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        systemRole:
+          type: boolean
+        tenantRoleModules:
+          type: array
+          items:
+            $ref: "#/components/schemas/TenantRoleModule"
+          uniqueItems: true
+        userTenantRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTenantRole"
+          uniqueItems: true
+    TenantRoleModule:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        tenantRole:
+          $ref: "#/components/schemas/TenantRole"
+        module:
+          $ref: "#/components/schemas/Module"
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        email:
+          type: string
+        passwordHash:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+          uniqueItems: true
+        personalInfo:
+          $ref: "#/components/schemas/PersonalInfo"
+        tenants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tenant"
+          uniqueItems: true
+        userTenantRoles:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserTenantRole"
+          uniqueItems: true
+        membershipVersions:
+          type: array
+          items:
+            $ref: "#/components/schemas/MembershipVersion"
+          uniqueItems: true
+    UserTenantRole:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          writeOnly: true
+        systemId:
+          type: string
+        isActive:
+          type: boolean
+        createdDate:
+          type: string
+          format: date-time
+        updatedDate:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        user:
+          $ref: "#/components/schemas/User"
+        tenantRole:
+          $ref: "#/components/schemas/TenantRole"
+        primaryRole:
+          type: boolean
+    ModulesIdListDto:
+      type: object
+      properties:
+        moduleSystemIds:
+          type: array
+          items:
+            type: string
+          maxItems: 2147483647
+          minItems: 1
+      required:
+      - moduleSystemIds
+    AuthenticationDto:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+        tenantSystemId:
+          type: string
+      required:
+      - email
+      - password
+    PageDto:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          description: 0-based page index
+          example: 0
+        size:
+          type: integer
+          format: int32
+          description: Page size (1..100)
+          example: 20
+    StatusDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - ok
+          - failed
+          - success
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT

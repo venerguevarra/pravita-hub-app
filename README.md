@@ -217,6 +217,11 @@ Typical local workflow:
    - `pnpm dev` to verify
 4. Commit + push to `main` to deploy to GitHub Pages.
 
+```env
+# .env.local 
+API_BASE_URL=http://localhost:9001
+```
+
 ---
 
 ## 10. Future Improvements
