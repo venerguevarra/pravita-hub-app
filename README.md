@@ -177,111 +177,9 @@ function App() {
 
 export default App;
 ```
-
 ---
 
-## 7. GitHub Pages Deployment
-
-This app is deployed as a **Vite SPA** to GitHub Pages using GitHub Actions.
-
-### 7.1 Vite base configuration
-
-In `vite.config.ts` you should have:
-
-```ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  plugins: [react()],
-  base: '/pravita-hub-app/', // IMPORTANT: use your repo name here
-});
-```
-
-> If the repo name is different, update `base` accordingly.
-
-### 7.2 GitHub Actions workflow
-
-Deployment workflow file (example):
-
-`.github/workflows/gh-pages.yml`:
-
-```yaml
-name: Deploy Vite app to GitHub Pages
-
-on:
-  push:
-    branches: [ main ]
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "vite-pages"
-  cancel-in-progress: true
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-```
-
-### 7.3 Enabling GitHub Pages
-
-1. Go to your **pravita-hub-app** repo on GitHub.
-2. Settings → **Pages**
-3. Under “Source”, select **GitHub Actions**.
-4. Save.
-
-Your hub app will be available at:
-
-```text
-https://<your-username>.github.io/pravita-hub-app/
-```
-
----
-
-## 8. Updating the Design System Version
+## 7. Updating the Design System Version
 
 When `pravita-react-ds` publishes a new version:
 
@@ -307,7 +205,7 @@ When `pravita-react-ds` publishes a new version:
 
 ---
 
-## 9. Development Workflow
+## 8. Development Workflow
 
 Typical local workflow:
 
@@ -327,3 +225,5 @@ Typical local workflow:
 - Tenant-based theming for Hub using DS tokens
 - Central auth and navigation components
 - CI checks (lint, tests) on push / PR
+- make the left nav route-aware (active state based on react-router), or 
+- add a collapsible sidebar for smaller screens.

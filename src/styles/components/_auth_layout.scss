@@ -1,0 +1,119 @@
+@use '../variables' as *;
+
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    background-color: $color-bg;
+}
+
+.auth-panel--visual {
+    flex: 3;
+    position: relative;
+    overflow: hidden;
+    color: $color-white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space-6;
+
+    > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+                        to bottom,
+                        rgba(0, 0, 0, 0.15),
+                        rgba(0, 0, 0, 0.45)
+        ),
+        url('/loginbg.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: scale(1.05);
+        z-index: 0;
+    }
+}
+
+.auth-panel-visual-inner {
+    max-width: 420px;
+}
+
+.auth-panel-visual-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: $space-3;
+}
+
+.auth-panel-visual-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: $space-6;
+}
+
+.auth-panel-visual-meta {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-panel--form {
+    flex: 2;
+    background-color: $color-surface;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space-6 $space-8;
+}
+
+.auth-panel-form-inner {
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-panel-form-header-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: $space-2;
+    color: $color-brand-heading;
+}
+
+.auth-panel-form-header-subtitle {
+    font-size: 0.9rem;
+    color: $color-fg-muted;
+    margin-bottom: $space-4;
+}
+
+.auth-submit-button {
+    background-color: $color-brand-primary;
+    border-color: $color-brand-primary;
+    color: $color-white;
+    font-weight: 600;
+
+    &:hover {
+        background-color: $color-brand-primary-hover;
+        border-color: $color-brand-primary-hover;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-layout {
+        flex-direction: column;
+    }
+
+    .auth-panel--visual {
+        min-height: 220px;
+        padding: $space-4;
+    }
+
+    .auth-panel--form {
+        padding: $space-4 $space-3;
+    }
+}

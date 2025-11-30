@@ -1,4 +1,7 @@
-@use './components/variables' as *;
-@use './components/typography';
-@use './components/layout';
-@use './components/auth';
+@use './variables' as *;
+@use 'typography';
+@use 'layout';
+@use './override';
+
+@use 'components/auth_layout';
+@use 'components/main_layout';

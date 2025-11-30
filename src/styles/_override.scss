@@ -1,0 +1,32 @@
+@use './variables' as *;
+
+.mantine-Input-input,
+.mantine-TextInput-input,
+.mantine-PasswordInput-input,
+.mantine-Select-input,
+.mantine-Button-root,
+.mantine-Menu-dropdown,
+.mantine-NavLink-root {
+    border-radius: 2px !important;
+}
+
+.mantine-Menu-dropdown {
+    min-width: $menu-width;
+    max-width: $menu-width;
+}
+
+[data-mantine-color-scheme] [data-hovered],
+[data-mantine-color-scheme] [data-active] {
+    border-radius: 2px !important;
+}
+
+.mantine-Menu-item,
+.mantine-Menu-item[data-hovered],
+.mantine-Menu-item[data-active] {
+    border-radius: 2px !important;
+}
+
+.mantine-NavLink-root[data-hovered],
+.mantine-NavLink-root[data-active] {
+    border-radius: 2px !important;
+}
