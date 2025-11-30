@@ -5,8 +5,7 @@ import './styles/main.scss';
 
 import App from './App.tsx';
 
-// 👇 from your design system package
-import { DSProvider } from 'pravita-react-ds'; // or whatever your "name" is
+import { DSProvider } from 'pravita-react-ds'; 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

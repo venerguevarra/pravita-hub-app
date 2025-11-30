@@ -1,30 +1,11 @@
-import { Button } from 'pravita-react-ds'; 
+import type React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRouter } from './router/AppRouter';
 
-function App() {
+export default function App(): React.JSX.Element {
   return (
-    <main
-      style={{
-        padding: '24px',
-        fontFamily:
-          "'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
-      }}
-    >
-      <h1>Pravita Hub App</h1>
-      <p>This app is now using the shared React design system library.</p>
-
-      <section
-        style={{
-          marginTop: '16px',
-          display: 'flex',
-          gap: '12px',
-        }}
-      >
-        <Button>Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="subtle">Subtle</Button>
-      </section>
-    </main>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 }
-
-export default App;
