@@ -32,7 +32,7 @@ export const MainHeaderMenu = (): React.JSX.Element => {
 
                     <Menu.Divider/>
 
-                    <Menu.Item color="red">Sub menu 5</Menu.Item>
+                    <Menu.Item>Sub menu 5</Menu.Item>
                 </Menu.Dropdown>
             </Menu>
 

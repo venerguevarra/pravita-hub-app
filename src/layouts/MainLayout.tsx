@@ -1,6 +1,6 @@
 import type React from 'react';
-import {Button} from '@mantine/core';
 import {MainHeaderMenu} from '../components/MainHeaderMenu.tsx';
+import {UserProfileMenu} from '../components/UserProfileMenu.tsx';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -19,10 +19,12 @@ export function MainLayout({children}: MainLayoutProps): React.JSX.Element {
 
                 {/* Right side stays the same */}
                 <div className="main-header-right">
-                    <span>Admin</span>
-                    <Button size="xs" variant="light">
-                        Sign out
-                    </Button>
+                    <UserProfileMenu
+                        userName="Admin"
+                        triggerClassName="main-header-menu-trigger main-header-profile-trigger"
+                        // onProfileClick={() => navigate('/admin/profile')}
+                        // onSignOutClick={handleSignOut}
+                    />
                 </div>
             </header>
 
