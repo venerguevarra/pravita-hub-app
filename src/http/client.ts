@@ -34,7 +34,7 @@ export function createHttpClient(options: HttpClientOptions): {
     });
 
     // Manage "only refresh once, queue everything else"
-    let isRefreshing = false;
+    let isRefreshing: boolean = false;
     let refreshPromise: Promise<TokenPair> | null = null;
 
     /**
@@ -43,16 +43,25 @@ export function createHttpClient(options: HttpClientOptions): {
      */
     instance.interceptors.request.use(
         (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-            const authConfig = config as InternalAuthConfig;
+            const authConfig: InternalAxiosRequestConfig<unknown> & AuthRequestConfig<unknown> = config as InternalAuthConfig;
 
             if (authConfig.skipAuth) {
                 return authConfig;
             }
 
-            const token = tokenStorage.getAccessToken();
+            const url: string = authConfig.url ?? '';
+
+            // Only protect these backend routes
+            const isProtected: boolean = url.startsWith('/platform-api') || url.startsWith('/tenant-api');
+
+            if (!isProtected) {
+                return authConfig;
+            }
+
+            const token: string | null = tokenStorage.getAccessToken();
             if (token) {
-                const headers = AxiosHeaders.from(authConfig.headers ?? {});
-                headers.set("Authorization", `Bearer ${token}`);
+                const headers: AxiosHeaders = AxiosHeaders.from(authConfig.headers ?? {});
+                headers.set('Authorization', `Bearer ${token}`);
                 authConfig.headers = headers;
             }
 
@@ -60,6 +69,7 @@ export function createHttpClient(options: HttpClientOptions): {
         },
         (error) => Promise.reject(error),
     );
+
 
     /**
      * RESPONSE INTERCEPTOR
