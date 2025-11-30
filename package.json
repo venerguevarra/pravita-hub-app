@@ -11,7 +11,8 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "preview": "vite preview",
     "test": "vitest",
-    "test:watch": "vitest --watch"
+    "test:watch": "vitest --watch",
+    "openapi:generate": "openapi-generator-cli generate -i openapi/backend.yaml -g typescript-axios -o src/api --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {
     "@mantine/core": "^8.3.9",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@openapitools/openapi-generator-cli": "^2.25.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
