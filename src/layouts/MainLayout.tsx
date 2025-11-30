@@ -14,7 +14,7 @@ export function MainLayout({children}: MainLayoutProps): React.JSX.Element {
                 <div className="main-header-left">
                     <div className="main-header-logo"/>
                     <div className="main-header-title">Pravita Hub</div>
-                    <MainHeaderMenu />
+                    <MainHeaderMenu/>
                 </div>
 
                 {/* Right side stays the same */}

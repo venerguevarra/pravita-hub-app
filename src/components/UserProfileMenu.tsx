@@ -10,8 +10,8 @@ export interface UserProfileMenuProps {
 }
 
 export function UserProfileMenu({
-                                     userName, initials, onProfileClick, onSignOutClick, triggerClassName,
-                                 }: UserProfileMenuProps): React.JSX.Element {
+                                    userName, initials, onProfileClick, onSignOutClick, triggerClassName,
+                                }: UserProfileMenuProps): React.JSX.Element {
     const avatarInitials: string = initials ?? userName.charAt(0).toUpperCase();
 
     const handleProfileClick = (): void => {
@@ -27,26 +27,26 @@ export function UserProfileMenu({
     };
 
     return (<Menu withinPortal position="bottom-end" offset={4}>
-            <Menu.Target>
-                <button
-                    type="button"
-                    className={triggerClassName}
-                >
-                    <Avatar radius="xl" size={24} color="cyan">
-                        {avatarInitials}
-                    </Avatar>
-                    <span>{userName}</span>
-                </button>
-            </Menu.Target>
+        <Menu.Target>
+            <button
+                type="button"
+                className={triggerClassName}
+            >
+                <Avatar radius="xl" size={24} color="cyan">
+                    {avatarInitials}
+                </Avatar>
+                <span>{userName}</span>
+            </button>
+        </Menu.Target>
 
-            <Menu.Dropdown>
-                <Menu.Item onClick={handleProfileClick}>
-                    Profile
-                </Menu.Item>
-                <Menu.Divider/>
-                <Menu.Item onClick={handleSignOutClick}>
-                    Sign out
-                </Menu.Item>
-            </Menu.Dropdown>
-        </Menu>);
+        <Menu.Dropdown>
+            <Menu.Item onClick={handleProfileClick}>
+                Profile
+            </Menu.Item>
+            <Menu.Divider/>
+            <Menu.Item onClick={handleSignOutClick}>
+                Sign out
+            </Menu.Item>
+        </Menu.Dropdown>
+    </Menu>);
 }

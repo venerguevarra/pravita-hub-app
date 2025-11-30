@@ -7,7 +7,7 @@ export function AppRouter(): React.JSX.Element {
     return (
         <Routes>
             <Route path="/" element={<LoginPage/>}/>
-            <Route path="/admin" element={<DashboardPage/>}/>
+            <Route path="/dashboard" element={<DashboardPage/>}/>
             <Route path="*" element={<Navigate to="/" replace/>}/>
         </Routes>
     );
