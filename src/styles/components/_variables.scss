@@ -1,0 +1,42 @@
+// src/styles/_variables.scss
+
+// Typography
+$font-family-sans: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+  'Segoe UI', sans-serif;
+$font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+  'Courier New', monospace;
+
+$font-size-base: 16px;
+$line-height-base: 1.5;
+
+// Colors – adjust to match your brand / DS
+$color-bg: #050816;
+$color-surface: #0b1020;
+$color-border-subtle: rgba(255, 255, 255, 0.08);
+$color-fg: #f5f5f7;
+$color-fg-muted: #a1a1aa;
+$color-accent: #3b82f6;
+$color-accent-soft: rgba(59, 130, 246, 0.1);
+$color-danger: #ef4444;
+
+// Spacing scale
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+
+// Radius
+$radius-sm: 0.25rem;
+$radius-md: 0.5rem;
+$radius-lg: 0.75rem;
+$radius-full: 9999px;
+
+// Shadows
+$shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+// Z-index
+$z-nav: 100;
+$z-overlay: 1000;
