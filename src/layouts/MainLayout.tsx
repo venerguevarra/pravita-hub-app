@@ -1,18 +1,18 @@
-import type React from 'react';
-import {MainHeaderMenu} from '../components/MainHeaderMenu.tsx';
-import {UserProfileMenu} from '../components/UserProfileMenu.tsx';
+import type React from "react";
+import { MainHeaderMenu } from "../components/MainHeaderMenu.tsx";
+import { UserProfileMenu } from "../components/UserProfileMenu.tsx";
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
 
-export function MainLayout({children}: MainLayoutProps): React.JSX.Element {
+export function MainLayout({ children }: MainLayoutProps): React.JSX.Element {
     return (
         <div className="main-layout">
             {/* Top nav bar */}
             <header className="main-header">
                 <div className="main-header-left">
-                    <div className="main-header-logo"/>
+                    <div className="main-header-logo" />
                     <div className="main-header-title">Pravita Hub</div>
                     <MainHeaderMenu />
                 </div>

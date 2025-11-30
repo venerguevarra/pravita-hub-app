@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import '@mantine/core/styles.css';
-import './styles/main.scss';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "@mantine/core/styles.css";
+import "./styles/main.scss";
 
-import App from './App.tsx';
+import App from "./App.tsx";
 
-import {DSProvider} from 'pravita-react-ds';
+import { DSProvider } from "pravita-react-ds";
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
         <DSProvider>
-            <App/>
+            <App />
         </DSProvider>
     </React.StrictMode>,
 );

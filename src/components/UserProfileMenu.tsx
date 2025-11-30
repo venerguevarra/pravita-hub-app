@@ -1,5 +1,5 @@
-import type React from 'react';
-import {Avatar, Menu} from '@mantine/core';
+import type React from "react";
+import { Avatar, Menu } from "@mantine/core";
 
 export interface UserProfileMenuProps {
     userName: string;
@@ -10,8 +10,12 @@ export interface UserProfileMenuProps {
 }
 
 export function UserProfileMenu({
-                                     userName, initials, onProfileClick, onSignOutClick, triggerClassName,
-                                 }: UserProfileMenuProps): React.JSX.Element {
+    userName,
+    initials,
+    onProfileClick,
+    onSignOutClick,
+    triggerClassName,
+}: UserProfileMenuProps): React.JSX.Element {
     const avatarInitials: string = initials ?? userName.charAt(0).toUpperCase();
 
     const handleProfileClick = (): void => {
@@ -26,12 +30,10 @@ export function UserProfileMenu({
         }
     };
 
-    return (<Menu withinPortal position="bottom-end" offset={4}>
+    return (
+        <Menu withinPortal position="bottom-end" offset={4}>
             <Menu.Target>
-                <button
-                    type="button"
-                    className={triggerClassName}
-                >
+                <button type="button" className={triggerClassName}>
                     <Avatar radius="xl" size={24} color="cyan">
                         {avatarInitials}
                     </Avatar>
@@ -40,13 +42,10 @@ export function UserProfileMenu({
             </Menu.Target>
 
             <Menu.Dropdown>
-                <Menu.Item onClick={handleProfileClick}>
-                    Profile
-                </Menu.Item>
-                <Menu.Divider/>
-                <Menu.Item onClick={handleSignOutClick}>
-                    Sign out
-                </Menu.Item>
+                <Menu.Item onClick={handleProfileClick}>Profile</Menu.Item>
+                <Menu.Divider />
+                <Menu.Item onClick={handleSignOutClick}>Sign out</Menu.Item>
             </Menu.Dropdown>
-        </Menu>);
+        </Menu>
+    );
 }

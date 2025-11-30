@@ -1,10 +1,10 @@
-@use 'variables' as *;
+@use "variables" as *;
 
 body {
-  font-family: $font-family-sans;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
-  color: $color-fg;
+    font-family: $font-family-sans;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-fg;
 }
 
 h1,
@@ -13,42 +13,42 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: $font-family-sans;
-  font-weight: 600;
-  margin: 0 0 $space-3;
-  line-height: 1.2;
+    font-family: $font-family-sans;
+    font-weight: 600;
+    margin: 0 0 $space-3;
+    line-height: 1.2;
 }
 
 h1 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 h3 {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 
 p {
-  margin: 0 0 $space-3;
-  color: $color-fg-muted;
+    margin: 0 0 $space-3;
+    color: $color-fg-muted;
 }
 
 a {
-  color: $color-accent;
-  text-decoration: none;
+    color: $color-accent;
+    text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 code {
-  font-family: $font-family-mono;
-  font-size: 0.9em;
-  background-color: rgba(255, 255, 255, 0.06);
-  padding: 0 0.25em;
-  border-radius: $radius-sm;
+    font-family: $font-family-mono;
+    font-size: 0.9em;
+    background-color: rgba(255, 255, 255, 0.06);
+    padding: 0 0.25em;
+    border-radius: $radius-sm;
 }

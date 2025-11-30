@@ -1,15 +1,10 @@
-import {Menu, NavLink} from '@mantine/core';
+import { Menu, NavLink } from "@mantine/core";
 
 export const MainHeaderMenu = (): React.JSX.Element => {
     return (
         <nav className="main-header-nav" aria-label="Main navigation">
             {/* Simple top-level link */}
-            <NavLink
-                label="Menu 1"
-                className="main-header-navlink"
-                variant="subtle"
-                active
-            />
+            <NavLink label="Menu 1" className="main-header-navlink" variant="subtle" active />
 
             {/* Dropdown menu with sub-items */}
             <Menu withinPortal position="bottom-start" offset={4}>
@@ -24,13 +19,13 @@ export const MainHeaderMenu = (): React.JSX.Element => {
                     <Menu.Item>Sub menu 1</Menu.Item>
                     <Menu.Item>Sub menu 2</Menu.Item>
 
-                    <Menu.Divider/>
+                    <Menu.Divider />
 
                     <Menu.Label>Section 2</Menu.Label>
                     <Menu.Item>Sub menu 3</Menu.Item>
                     <Menu.Item>Sub menu 4</Menu.Item>
 
-                    <Menu.Divider/>
+                    <Menu.Divider />
 
                     <Menu.Item>Sub menu 5</Menu.Item>
                 </Menu.Dropdown>
@@ -52,4 +47,4 @@ export const MainHeaderMenu = (): React.JSX.Element => {
             </Menu>
         </nav>
     );
-}
+};
