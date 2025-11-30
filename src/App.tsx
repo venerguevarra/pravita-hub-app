@@ -4,7 +4,7 @@ import { AppRouter } from './router/AppRouter';
 
 export default function App(): React.JSX.Element {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <AppRouter />
     </BrowserRouter>
   );
