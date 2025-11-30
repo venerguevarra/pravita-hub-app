@@ -1,13 +1,13 @@
 import type React from 'react';
 import { MainLayout } from '../layouts/MainLayout';
 
-export function /**/DashboardPage(): React.JSX.Element {
+export const DashboardPage = (): React.JSX.Element => {
     return (
         <MainLayout>
-            <div className="admin-page-header">
+            <div className="main-page-header">
                 <div>
-                    <h1 className="admin-page-title">Header</h1>
-                    <p className="admin-page-subtitle">
+                    <h1 className="main-page-title">Header</h1>
+                    <p className="main-page-subtitle">
                         Overview of the page content and actions.
                     </p>
                 </div>

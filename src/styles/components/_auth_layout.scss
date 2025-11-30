@@ -10,7 +10,7 @@
     flex: 3;
     position: relative;
     overflow: hidden;
-    color: #ffffff;
+    color: $color-white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,18 +46,20 @@
 .auth-panel-visual-title {
     font-size: 2rem;
     font-weight: 700;
+    letter-spacing: 0.04em;
     margin-bottom: $space-3;
-    color: rgba(255, 255, 255, 0.96);
 }
 
 .auth-panel-visual-text {
     font-size: 0.95rem;
     line-height: 1.6;
-    margin-bottom: $space-3;
-    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: $space-6;
 }
 
-.auth-panel-visual-note {
+.auth-panel-visual-meta {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.8);
 }
@@ -80,7 +82,7 @@
     font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: $space-2;
-    color: #0d1b2a;
+    color: $color-brand-heading;
 }
 
 .auth-panel-form-header-subtitle {
@@ -90,14 +92,14 @@
 }
 
 .auth-submit-button {
-    background-color: #008EA9;
-    border-color: #008EA9;
-    color: #ffffff;
+    background-color: $color-brand-primary;
+    border-color: $color-brand-primary;
+    color: $color-white;
     font-weight: 600;
 
     &:hover {
-        background-color: #398B96;
-        border-color: #398B96;
+        background-color: $color-brand-primary-hover;
+        border-color: $color-brand-primary-hover;
     }
 }
 

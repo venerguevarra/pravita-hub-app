@@ -3,7 +3,7 @@ import {Button, PasswordInput, Stack, TextInput} from '@mantine/core';
 import {useNavigate} from 'react-router-dom';
 import {AuthLayout} from '../layouts/AuthLayout';
 
-export function LoginPage(): React.JSX.Element {
+export const LoginPage = (): React.JSX.Element => {
     const navigate = useNavigate();
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
