@@ -1,4 +1,3 @@
-// src/http/tokenStorage.ts
 import type { TokenPair, TokenStorage } from "./types";
 
 const ACCESS_KEY = "access_token";

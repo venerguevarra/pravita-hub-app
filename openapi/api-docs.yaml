@@ -1106,35 +1106,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiErrorResponse"
-  /refresh:
-    post:
-      tags:
-      - Authentication
-      summary: Refresh access token using refreshToken cookie
-      operationId: refreshToken
-      parameters:
-      - name: refreshToken
-        in: cookie
-        required: false
-        schema:
-          type: string
-      - name: refreshToken
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: X-Refresh-Token
-        in: header
-        required: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/AuthenticationTokenDto"
   /platform-api/users/deactivate:
     post:
       tags:
@@ -1566,7 +1537,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiErrorResponse"
-  /authenticate:
+  /auth/refresh:
+    post:
+      tags:
+      - Authentication
+      summary: Refresh access token using refreshToken cookie
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: X-Refresh-Token
+        in: header
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationTokenDto"
+  /auth/authenticate:
     post:
       tags:
       - Authentication
@@ -1995,21 +1995,6 @@ components:
           type: string
         active:
           type: boolean
-    AuthenticationTokenDto:
-      type: object
-      properties:
-        accessToken:
-          type: string
-        tokenType:
-          type: string
-        accessExpiresAt:
-          type: integer
-          format: int64
-        refreshToken:
-          type: string
-        refreshExpiresAt:
-          type: integer
-          format: int64
     UserActivationDto:
       type: object
       properties:
@@ -2421,6 +2406,21 @@ components:
           minItems: 1
       required:
       - moduleSystemIds
+    AuthenticationTokenDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+        accessExpiresAt:
+          type: integer
+          format: int64
+        refreshToken:
+          type: string
+        refreshExpiresAt:
+          type: integer
+          format: int64
     AuthenticationDto:
       type: object
       properties:

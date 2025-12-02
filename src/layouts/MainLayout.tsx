@@ -1,12 +1,15 @@
 import type React from "react";
 import { MainHeaderMenu } from "../components/MainHeaderMenu.tsx";
 import { UserProfileMenu } from "../components/UserProfileMenu.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps): React.JSX.Element {
+    const navigate = useNavigate();
+
     return (
         <div className="main-layout">
             {/* Top nav bar */}
@@ -23,7 +26,7 @@ export function MainLayout({ children }: MainLayoutProps): React.JSX.Element {
                         userName="Admin"
                         triggerClassName="main-header-menu-trigger main-header-profile-trigger"
                         // onProfileClick={() => navigate('/admin/profile')}
-                        // onSignOutClick={handleSignOut}
+                        onSignOutClick={() => navigate("/login")}
                     />
                 </div>
             </header>

@@ -1,4 +1,3 @@
-// src/http/refresh.ts
 import axios from "axios";
 import type { RefreshTokenFn, TokenPair } from "./types";
 
