@@ -80,8 +80,11 @@ export function createHttpClient(options: HttpClientOptions): {
         async (error: AxiosError) => {
             const status = error.response?.status;
             const originalConfig = error.config as InternalAuthConfig | undefined;
+            const url: string = originalConfig?.url ?? "";
+            const isProtected: boolean = url.startsWith("/platform-api") || url.startsWith("/tenant-api");
 
-            if (!originalConfig || originalConfig._retry || status !== 401) {
+            // ⬇️ add `originalConfig?.skipAuth` here
+            if (!originalConfig || originalConfig._retry || originalConfig.skipAuth || status !== 401 || !isProtected) {
                 return Promise.reject(error);
             }
 

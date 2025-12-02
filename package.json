@@ -12,10 +12,11 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/admin-api --additional-properties=useSingleRequestParameter=true"
+    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/hub-api --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {
     "@mantine/core": "^8.3.9",
+    "@mantine/form": "^8.3.9",
     "@mantine/hooks": "^8.3.9",
     "@mantine/notifications": "^8.3.9",
     "axios": "^1.13.2",

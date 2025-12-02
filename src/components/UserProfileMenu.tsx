@@ -1,5 +1,6 @@
 import type React from "react";
 import { Avatar, Menu } from "@mantine/core";
+import { logout } from "../services/authService.ts";
 
 export interface UserProfileMenuProps {
     userName: string;
@@ -25,6 +26,7 @@ export function UserProfileMenu({
     };
 
     const handleSignOutClick = (): void => {
+        logout();
         if (onSignOutClick) {
             onSignOutClick();
         }

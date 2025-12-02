@@ -19,10 +19,12 @@ const options: HttpClientOptions = {
 export const http = createHttpClient(options);
 
 export const axiosInstance: AxiosInstance = http.axios;
-export const requestWithCancel: <T = unknown>(config: AuthRequestConfig) => {
+export const requestWithCancel: <T = unknown>(
+    config: AuthRequestConfig,
+) => {
     promise: Promise<AxiosResponse<T>>;
     cancel: () => void;
-    signal: AbortSignal
+    signal: AbortSignal;
 } = http.requestWithCancel;
 
 export * from "./types";
