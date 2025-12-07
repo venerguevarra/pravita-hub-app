@@ -1,22 +1,13 @@
 import type React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    Drawer,
-    NavLink,
-    ScrollArea,
-    Stack,
-    Text,
-} from "@mantine/core";
+import { Drawer, NavLink, ScrollArea, Stack, Text } from "@mantine/core";
 
 export interface MainNavDrawerProps {
     opened: boolean;
     onClose: () => void;
 }
 
-export function MainDrawer({
-                                  opened,
-                                  onClose,
-                              }: MainNavDrawerProps): React.JSX.Element {
+export function MainDrawer({ opened, onClose }: MainNavDrawerProps): React.JSX.Element {
     const navigate = useNavigate();
 
     const handleNavigate = (path: string) => {
@@ -41,10 +32,7 @@ export function MainDrawer({
         >
             <ScrollArea h="100%">
                 <Stack gap="xs" mt="sm">
-                    <NavLink
-                        label="Dashboard"
-                        onClick={() => handleNavigate("/dashboard")}
-                    />
+                    <NavLink label="Dashboard" onClick={() => handleNavigate("/dashboard")} />
                     {/* Add more links as you add sections */}
                     {/* <NavLink label="Patients" onClick={() => handleNavigate("/patients")} /> */}
                     {/* <NavLink label="Settings" onClick={() => handleNavigate("/settings")} /> */}
