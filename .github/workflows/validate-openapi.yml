@@ -30,11 +30,11 @@ jobs:
       - name: Validate Swagger/OpenAPI YAML files
         run: |
           set -e
-          echo "Searching for YAML files under open-api/"
-          files=$(find open-api -type f \( -name "*.yaml" -o -name "*.yml" \))
+          echo "Searching for YAML files under openapi/"
+          files=$(find openapi -type f \( -name "*.yaml" -o -name "*.yml" \))
 
           if [ -z "$files" ]; then
-            echo "No YAML files found under open-api/"
+            echo "No YAML files found under openapi/"
             exit 0
           fi
 
