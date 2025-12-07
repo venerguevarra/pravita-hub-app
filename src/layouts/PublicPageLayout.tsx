@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { Anchor, Container, Group, Stack, Text, Title } from "@mantine/core";
+import { Container, Group, Stack, Text, Title } from "@mantine/core";
 
 export interface PublicPageLayoutProps {
     title: string;
@@ -12,7 +11,8 @@ export interface PublicPageLayoutProps {
 export function PublicPageLayout({ title, subtitle, description, children }: PublicPageLayoutProps) {
     const year: number = new Date().getFullYear();
 
-    return (<div className="public-page">
+    return (
+        <div className="public-page">
             <header className="public-page__header">
                 <Container size="lg" className="public-page__header-inner">
                     <div className="public-page__brand">
@@ -27,17 +27,19 @@ export function PublicPageLayout({ title, subtitle, description, children }: Pub
                     <Stack gap="md" className="public-page__content">
                         <div>
                             <Title order={1}>{title}</Title>
-                            {subtitle && (<Text size="sm" c="dimmed" mt="xs">
+                            {subtitle && (
+                                <Text size="sm" c="dimmed" mt="xs">
                                     {subtitle}
-                                </Text>)}
-                            {description && (<Text size="sm" mt="md">
+                                </Text>
+                            )}
+                            {description && (
+                                <Text size="sm" mt="md">
                                     {description}
-                                </Text>)}
+                                </Text>
+                            )}
                         </div>
 
-                        <div className="public-page__card">
-                            {children}
-                        </div>
+                        <div className="public-page__card">{children}</div>
                     </Stack>
                 </Container>
             </main>
@@ -48,10 +50,9 @@ export function PublicPageLayout({ title, subtitle, description, children }: Pub
                         © {year} Pravita. All rights reserved.
                     </Text>
 
-                    <Group gap="xs">
-                        {/* Optional: add privacy/terms later */}
-                    </Group>
+                    <Group gap="xs">{/* Optional: add privacy/terms later */}</Group>
                 </Container>
             </footer>
-        </div>);
+        </div>
+    );
 }

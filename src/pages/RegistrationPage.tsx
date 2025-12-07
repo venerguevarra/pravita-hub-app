@@ -11,8 +11,8 @@ export function RegisterPage() {
         >
             <Stack gap="xl">
                 <Text size="sm" c="dimmed">
-                    We’ll ask for your basic information now. You can complete your profile
-                    and organization details after you sign in.
+                    We’ll ask for your basic information now. You can complete your profile and organization details
+                    after you sign in.
                 </Text>
 
                 <Stack gap="sm">
@@ -23,8 +23,8 @@ export function RegisterPage() {
 
                     <div className="register-page__form-placeholder">
                         <Text size="sm" c="dimmed">
-                            Registration form fields go here (email, password, confirm
-                            password, name, etc.). We will implement this in the next step.
+                            Registration form fields go here (email, password, confirm password, name, etc.). We will
+                            implement this in the next step.
                         </Text>
                     </div>
                 </Stack>

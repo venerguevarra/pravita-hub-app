@@ -6,21 +6,14 @@
 // ─────────────────────────────────────────────────────────────
 
 $font-family-sans:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Text",
-        "Segoe UI",
-        sans-serif;
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "Segoe UI",
+    sans-serif;
 
-$font-family-mono:
-        SFMono-Regular,
-        Menlo,
-        Monaco,
-        Consolas,
-        "Liberation Mono",
-        "Courier New",
-        monospace;
+$font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
 $font-size-base: 16px;
 $line-height-base: 1.5;
@@ -32,7 +25,7 @@ $line-height-base: 1.5;
 $color-white: #ffffff;
 $color-black: #020617;
 
-$color-neutral-50:  #f9fafb;
+$color-neutral-50: #f9fafb;
 $color-neutral-100: #f3f4f6;
 $color-neutral-200: #e5e7eb;
 $color-neutral-300: #d1d5db;
@@ -47,32 +40,32 @@ $color-neutral-900: #020617;
 // Brand – medical (teal + clinical blue)
 // ─────────────────────────────────────────────────────────────
 
-$color-brand-primary:        #008ea9;   // main medical teal
-$color-brand-primary-soft:   #e0f5f8;   // light teal background
-$color-brand-primary-strong: #026579;   // deeper teal for emphasis
+$color-brand-primary: #008ea9; // main medical teal
+$color-brand-primary-soft: #e0f5f8; // light teal background
+$color-brand-primary-strong: #026579; // deeper teal for emphasis
 $color-brand-primary-hover: color.adjust($color-brand-primary, $lightness: -6%);
 
-$color-brand-secondary:      #0a84ff;   // complementary clinical blue
+$color-brand-secondary: #0a84ff; // complementary clinical blue
 $color-brand-secondary-soft: #e0efff;
 
 // Header logo gradient
 $color-header-logo-from: $color-brand-primary;
-$color-header-logo-to:   $color-brand-secondary;
+$color-header-logo-to: $color-brand-secondary;
 
 // ─────────────────────────────────────────────────────────────
 // App backgrounds & text
 // ─────────────────────────────────────────────────────────────
 
-$color-bg:            $color-neutral-50;  // overall page background
-$color-bg-accent:     #e0f2fe;            // subtle blue panels / hero
-$color-surface:       $color-white;       // cards, nav, sheets
+$color-bg: $color-neutral-50; // overall page background
+$color-bg-accent: #e0f2fe; // subtle blue panels / hero
+$color-surface: $color-white; // cards, nav, sheets
 
 $color-border-subtle: $color-neutral-200;
 $color-border-strong: $color-neutral-300;
 
-$color-fg:            #0f172a;            // primary text
-$color-fg-muted:      $color-neutral-500; // secondary text
-$color-brand-heading: #0f172a;            // headings (auth/public)
+$color-fg: #0f172a; // primary text
+$color-fg-muted: $color-neutral-500; // secondary text
+$color-brand-heading: #0f172a; // headings (auth/public)
 
 // Generic page background for unauthenticated public pages
 $color-background-page: $color-neutral-50;
@@ -81,25 +74,25 @@ $color-background-page: $color-neutral-50;
 // Semantic state colors (clinical UI)
 // ─────────────────────────────────────────────────────────────
 
-$color-info:        $color-brand-secondary;
-$color-info-soft:   rgba($color-brand-secondary, 0.12);
+$color-info: $color-brand-secondary;
+$color-info-soft: rgba($color-brand-secondary, 0.12);
 
-$color-success:      #16a34a;
+$color-success: #16a34a;
 $color-success-soft: rgba(22, 163, 74, 0.12);
 
-$color-warning:      #f59e0b;
+$color-warning: #f59e0b;
 $color-warning-soft: rgba(245, 158, 11, 0.12);
 
-$color-danger:       #ef4444;
-$color-danger-soft:  rgba(239, 68, 68, 0.12);
+$color-danger: #ef4444;
+$color-danger-soft: rgba(239, 68, 68, 0.12);
 
 // ─────────────────────────────────────────────────────────────
 // Legacy / utility aliases (to keep older names working)
 // ─────────────────────────────────────────────────────────────
 
-$color-accent:       $color-brand-secondary;
-$color-accent-soft:  rgba($color-brand-secondary, 0.12);
-$color-accent-deep:         color.adjust($color-brand-secondary, $lightness: -15%);
+$color-accent: $color-brand-secondary;
+$color-accent-soft: rgba($color-brand-secondary, 0.12);
+$color-accent-deep: color.adjust($color-brand-secondary, $lightness: -15%);
 
 // ─────────────────────────────────────────────────────────────
 // Spacing scale
