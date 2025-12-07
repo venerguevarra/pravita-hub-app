@@ -13,7 +13,7 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "typecheck": "pnpm openapi:generate && tsc -b",
-    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/hub-api/__openapi-generated --additional-properties=useSingleRequestParameter=true"
+    "openapi:generate": "openapi-generator-cli generate -i openapi/hub-api-docs.yaml -g typescript-axios -o src/api/hub-api/__openapi-generated --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {
     "@mantine/core": "^8.3.9",

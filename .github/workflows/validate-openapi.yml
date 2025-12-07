@@ -1,0 +1,45 @@
+name: Validate OpenAPI specs
+
+on:
+  push:
+    paths:
+      - "open-api/**/*.yaml"
+      - "open-api/**/*.yml"
+  pull_request:
+    paths:
+      - "open-api/**/*.yaml"
+      - "open-api/**/*.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install swagger-cli
+        run: npm install -g swagger-cli
+
+      - name: Validate Swagger/OpenAPI YAML files
+        run: |
+          set -e
+          echo "Searching for YAML files under open-api/"
+          files=$(find open-api -type f \( -name "*.yaml" -o -name "*.yml" \))
+
+          if [ -z "$files" ]; then
+            echo "No YAML files found under open-api/"
+            exit 0
+          fi
+
+          for file in $files; do
+            echo "Validating $file"
+            swagger-cli validate "$file"
+          done
+
+          echo "All Swagger/OpenAPI files are valid."
