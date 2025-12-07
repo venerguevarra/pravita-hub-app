@@ -1,14 +1,15 @@
 name: Validate OpenAPI specs
 
 on:
-  push:
-    paths:
-      - "open-api/**/*.yaml"
-      - "open-api/**/*.yml"
-  pull_request:
-    paths:
-      - "open-api/**/*.yaml"
-      - "open-api/**/*.yml"
+  push:            # runs on every push
+    branches:
+      - main
+      - develop
+  pull_request:    # runs on every PR
+    branches:
+      - main
+      - develop
+  workflow_dispatch:  # optional: allow manual runs from the UI
 
 jobs:
   validate:
