@@ -1,21 +1,19 @@
 import type React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { localStorageTokenStorage } from "../http";
-import { PUBLIC_PATHS } from "./publicRoutes.ts";
+import { isPublicPath } from "./publicRoutes.ts";
+import { isAuthenticated } from "../auth/session.ts";
 
 export function AuthGuard(): React.JSX.Element {
     const location = useLocation();
-    const token: string | null = localStorageTokenStorage.getAccessToken();
     const path: string = location.pathname;
 
-    const isPublic: boolean = PUBLIC_PATHS.includes(path);
-    const isAuthenticated: boolean = !!token;
+    const isUserAuthenticated: boolean = !!isAuthenticated();
 
-    if (!isAuthenticated && !isPublic) {
+    if (!isUserAuthenticated && !isPublicPath(path)) {
         return <Navigate to="/login" replace state={{ from: location }} />;
     }
 
-    if (isAuthenticated && path === "/login") {
+    if (isUserAuthenticated && path === "/login") {
         return <Navigate to="/dashboard" replace />;
     }
 
