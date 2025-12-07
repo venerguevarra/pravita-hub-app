@@ -1,0 +1,45 @@
+@use "../variables" as *;
+
+.verify-page {
+    max-width: 420px;
+}
+
+.verify-page__content {
+    padding: $space-2 0;
+}
+
+/* Small gap under PIN input */
+.verify-page__error-row {
+    margin-top: 4px; // tighter than $space-1
+}
+
+/* One-line error text always present */
+.verify-page__error-text {
+    color: transparent; // invisible by default
+    font-size: 0.75rem;
+    line-height: 1.2;
+    margin: 0;
+    white-space: nowrap; // keep it on one line so height is constant & small
+}
+
+/* When error is active, just change color */
+.verify-page__error-text--visible {
+    color: #ef4444; // or $color-danger
+}
+
+/* Button */
+.verify-page__submit {
+    width: 160px;
+
+    @media (max-width: 640px) {
+        width: 100%;
+    }
+}
+
+.verify-success-page {
+    padding-block: $space-6;
+}
+
+.verify-success-page__content {
+    max-width: 360px;
+}

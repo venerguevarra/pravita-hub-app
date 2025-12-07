@@ -7,6 +7,7 @@
     background: $color-background-page;
 }
 
+/* Header */
 .public-page__header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     background: $color-surface;
@@ -19,6 +20,7 @@
     padding-block: $space-3;
 }
 
+/* Branding */
 .public-page__brand {
     display: inline-flex;
     align-items: center;
@@ -41,34 +43,48 @@
     font-size: 0.8rem;
 }
 
+/* MAIN AREA --------------------------------------------------------------- */
+
 .public-page__main {
     flex: 1;
     display: flex;
     align-items: flex-start;
     padding-block: $space-6;
+    justify-content: center; // ensures horizontal centering
 }
 
+/* ⭐ NEW: widen the layout container */
 .public-page__main-inner {
-    max-width: 720px;
+    max-width: 960px; // was 720px → now full layout width
+    width: 100%;
+    padding-inline: $space-4;
 }
 
+/* ⭐ NEW: widen content container */
 .public-page__content {
-    max-width: 640px;
+    max-width: 860px; // was 640px → now allows the form to grow
+    width: 100%;
+    margin-inline: auto;
 }
+
+/* CARD -------------------------------------------------------------------- */
 
 .public-page__card {
     margin-top: $space-4;
-    padding: $space-4;
-    border-radius: $radius-lg; // was $radius-3
+    padding: $space-6; // more breathing room
+    border-radius: $radius-lg;
     background: $color-surface;
     box-shadow: $shadow-soft;
 }
 
+/* Optional placeholder */
 .register-page__form-placeholder {
     padding: $space-3;
-    border-radius: $radius-md; // was $radius-2
+    border-radius: $radius-md;
     background-color: rgba(15, 23, 42, 0.02);
 }
+
+/* FOOTER ------------------------------------------------------------------ */
 
 .public-page__footer {
     border-top: 1px solid rgba(0, 0, 0, 0.04);

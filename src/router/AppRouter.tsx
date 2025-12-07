@@ -4,17 +4,17 @@ import { LoginPage } from "../pages/LoginPage";
 import { DashboardPage } from "../pages/DashboardPage.tsx";
 import { AuthGuard } from "../auth/AuthGuard";
 import RegisterPage from "../pages/RegistrationPage.tsx";
+import EmailVerificationPage from "../pages/EmailVerificationPage.tsx";
 
 export function AppRouter(): React.JSX.Element {
     return (
         <Routes>
             <Route element={<AuthGuard />}>
-                {/* Root: when guarded, just pick a default authenticated page */}
                 <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
+                {/* Public route(s) */}
                 <Route path="/register" element={<RegisterPage />} />
-
-                {/* Public route */}
+                <Route path="/verify-email" element={<EmailVerificationPage />} />
                 <Route path="/login" element={<LoginPage />} />
 
                 {/* Protected route(s) */}

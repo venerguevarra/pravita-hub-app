@@ -1,0 +1,91 @@
+@use "../variables" as *;
+
+/* --- Layout width -------------------------------------------------------- */
+.register-form {
+    max-width: 720px;
+    width: 100%;
+}
+
+/* --- Section spacing ------------------------------------------------------ */
+.register-form__section {
+    padding: 0;
+    gap: $space-4;
+}
+
+.register-form__section-title {
+    font-size: 1rem;
+    margin-bottom: $space-2;
+}
+
+/* --- Name row: responsive grid ------------------------------------------- */
+.register-form__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-3;
+}
+
+@media (min-width: 640px) {
+    .register-form__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* --- Password grouping ---------------------------------------------------- */
+.register-form__field-group {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+}
+
+/* --- Helper hint under email --------------------------------------------- */
+.register-form__hint {
+    margin-top: -$space-1;
+    margin-bottom: $space-1;
+    padding-block: $space-2;
+    padding-inline: $space-3;
+    font-size: 0.8rem;
+}
+
+/* --- Divider spacing ------------------------------------------------------ */
+.register-form__divider {
+    margin-top: $space-4;
+    margin-bottom: $space-3;
+}
+
+/* --- Actions area --------------------------------------------------------- */
+.register-form__actions {
+    margin-top: $space-2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3;
+}
+
+.register-form__actions > .mantine-Text-root {
+    flex: 1 1 auto;
+}
+
+/* Submit button */
+.register-form__submit {
+    min-width: 160px;
+}
+
+@media (max-width: 640px) {
+    .register-form__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .register-form__submit {
+        width: 100%;
+    }
+}
+
+.public-page__card {
+    display: flex;
+    justify-content: center;
+}
+
+.register-form {
+    width: 100%;
+    max-width: 720px;
+}
