@@ -1,24 +1,24 @@
 import { useCallback, useRef, useState } from "react";
 
 export function useCountdown(initialSeconds: number) {
-    const [seconds, setSeconds] = useState(initialSeconds);
-    const [isRunning, setIsRunning] = useState(false);
+    const [seconds, setSeconds] = useState<number>(initialSeconds);
+    const [isRunning, setIsRunning] = useState<boolean>(false);
     const intervalRef = useRef<number | null>(null);
 
-    const clear = useCallback(() => {
+    const clear = useCallback((): void => {
         if (intervalRef.current != null) {
             window.clearInterval(intervalRef.current);
             intervalRef.current = null;
         }
     }, []);
 
-    const restart = useCallback(() => {
+    const restart = useCallback((): void => {
         clear();
         setSeconds(initialSeconds);
         setIsRunning(true);
 
-        intervalRef.current = window.setInterval(() => {
-            setSeconds((current) => {
+        intervalRef.current = window.setInterval((): void => {
+            setSeconds((current: number): number => {
                 if (current <= 1) {
                     clear();
                     setIsRunning(false);
@@ -29,7 +29,7 @@ export function useCountdown(initialSeconds: number) {
         }, 1000);
     }, [clear, initialSeconds]);
 
-    const complete = useCallback(() => {
+    const complete = useCallback((): void => {
         clear();
         setSeconds(0);
         setIsRunning(false);

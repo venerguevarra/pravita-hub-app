@@ -14,9 +14,12 @@ import {
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AxiosError, isAxiosError } from "axios";
 import { PublicPageLayout } from "../layouts/PublicPageLayout";
 import { TermsOfUseDialog } from "../components/legal/TermsOfUseDialog";
 import { PrivacyPolicyDialog } from "../components/legal/PrivacyPolicyDialog";
+import UserRegistrationService from "../services/userRegistrationService";
+import { Banner } from "../components/Banner.tsx";
 
 type RegisterFormValues = {
     firstName: string;
@@ -27,14 +30,25 @@ type RegisterFormValues = {
     acceptTerms: boolean;
 };
 
-const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
-// At least 8 chars, one upper, one lower, one digit, one special
-const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+type ProblemDetails = {
+    title?: string;
+    detail?: string;
+    status?: number;
+};
 
-export function RegisterPage() {
-    const [termsOpen, setTermsOpen] = useState(false);
-    const [privacyOpen, setPrivacyOpen] = useState(false);
+const EMAIL_REGEX: RegExp = /^\S+@\S+\.\S+$/;
+const STRONG_PASSWORD_REGEX: RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+const DEFAULT_SUBMIT_ERROR: string = "We couldn’t create your account. Please try again in a moment.";
+const DUPLICATE_EMAIL_ERROR: string = "An account with this email already exists. Try signing in instead.";
+
+export function RegistrationPage(): React.JSX.Element {
+    const [termsOpen, setTermsOpen] = useState<boolean>(false);
+    const [privacyOpen, setPrivacyOpen] = useState<boolean>(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
     const navigate = useNavigate();
+    const registrationService = UserRegistrationService.getInstance();
 
     const form = useForm<RegisterFormValues>({
         initialValues: {
@@ -53,56 +67,80 @@ export function RegisterPage() {
             email: values.email.trim(),
         }),
         validate: {
-            firstName: (value) => {
+            firstName: (value: string): string | null => {
                 if (!value.trim()) return "First name is required.";
                 if (value.length > 100) return "First name must be at most 100 characters.";
                 return null;
             },
-            lastName: (value) => {
+            lastName: (value: string): string | null => {
                 if (!value.trim()) return "Last name is required.";
                 if (value.length > 100) return "Last name must be at most 100 characters.";
                 return null;
             },
-            email: (value) => {
+            email: (value: string): string | null => {
                 if (!value.trim()) return "Email is required.";
                 if (!EMAIL_REGEX.test(value)) return "Enter a valid email address.";
                 return null;
             },
-            password: (value) => {
+            password: (value: string): string | null => {
                 if (!value) return "Password is required.";
                 if (!STRONG_PASSWORD_REGEX.test(value)) {
                     return "Use at least 8 characters with upper, lower, number, and symbol.";
                 }
                 return null;
             },
-            confirmPassword: (value, values) => {
+            confirmPassword: (value: string, values: RegisterFormValues): string | null => {
                 if (!value) return "Please confirm your password.";
                 if (value !== values.password) return "Passwords do not match.";
                 return null;
             },
-            acceptTerms: (value) => (value ? null : "You must agree to the terms to continue."),
+            acceptTerms: (value: boolean): string | null => (value ? null : "You must agree to the terms to continue."),
         },
     });
 
-    const handleSubmit = form.onSubmit((values) => {
-        // TODO: call backend API to register user
-        console.log("register form submit", values);
-        navigate("/verify-email", {
-            state: { email: values.email }, // optional: pass the user’s email
-        });
+    const resolveSubmitErrorMessage = (axiosError: AxiosError<ProblemDetails>): string => {
+        const status = axiosError.response?.status;
+
+        if (status === 409) {
+            return DUPLICATE_EMAIL_ERROR;
+        }
+
+        return DEFAULT_SUBMIT_ERROR;
+    };
+
+    const handleSubmit = form.onSubmit(async (values: RegisterFormValues): Promise<void> => {
+        setSubmitError(null);
+        setIsSubmitting(true);
+
+        try {
+            await registrationService.registerUser({
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                rawPassword: values.password,
+            });
+
+            navigate("/verify-email", {
+                state: { email: values.email },
+            });
+        } catch (error: unknown) {
+            let message: string = DEFAULT_SUBMIT_ERROR;
+
+            if (isAxiosError<ProblemDetails>(error)) {
+                const axiosError = error as AxiosError<ProblemDetails>;
+                message = resolveSubmitErrorMessage(axiosError);
+            }
+
+            setSubmitError(message);
+        } finally {
+            setIsSubmitting(false);
+        }
     });
 
     return (
-        <PublicPageLayout
-            title="Create your account"
-            subtitle="Join Pravita Hub"
-            description="Set up your account to access Pravita Hub. Use your work email if you are joining an existing organization."
-        >
-            <Stack gap="xl">
-                <Text size="sm" c="dimmed">
-                    We’ll ask for your basic information now. You can complete your profile and organization details
-                    after you sign in.
-                </Text>
+        <>
+            <TermsOfUseDialog opened={termsOpen} onClose={(): void => setTermsOpen(false)} />
+            <PrivacyPolicyDialog opened={privacyOpen} onClose={(): void => setPrivacyOpen(false)} />
 
             <PublicPageLayout
                 title="Create your account"
@@ -111,20 +149,36 @@ export function RegisterPage() {
             >
                 <form onSubmit={handleSubmit} className="register-form">
                     <Stack gap="xl">
+                        {submitError && (
+                            <Alert variant="light" color="red" radius="md" className="register-form__submit-error">
+                                {submitError}
+                            </Alert>
+                        )}
+
                         <Stack gap="md" className="register-form__section">
                             <Title order={4} className="register-form__section-title">
                                 Account details
                             </Title>
 
-                    <div className="register-page__form-placeholder">
-                        <Text size="sm" c="dimmed">
-                            Registration form fields go here (email, password, confirm password, name, etc.). We will
-                            implement this in the next step.
-                        </Text>
-                    </div>
-                </Stack>
+                            <div className="register-form__grid">
+                                <TextInput
+                                    withAsterisk
+                                    label="First name"
+                                    size="md"
+                                    radius="md"
+                                    autoComplete="given-name"
+                                    {...form.getInputProps("firstName")}
+                                />
+                                <TextInput
+                                    withAsterisk
+                                    label="Last name"
+                                    size="md"
+                                    radius="md"
+                                    autoComplete="family-name"
+                                    {...form.getInputProps("lastName")}
+                                />
+                            </div>
 
-                            {/* Email + hint */}
                             <TextInput
                                 withAsterisk
                                 label="Email"
@@ -134,11 +188,9 @@ export function RegisterPage() {
                                 autoComplete="email"
                                 {...form.getInputProps("email")}
                             />
-                            <Alert variant="light" color="blue" radius="md" className="register-form__hint">
-                                For organization or tenant accounts, use your organization email address.
-                            </Alert>
 
-                            {/* Passwords */}
+                            <Banner variant="info" message="For organization accounts, use your organization email address." />
+
                             <PasswordInput
                                 withAsterisk
                                 label="Password"
@@ -162,7 +214,9 @@ export function RegisterPage() {
 
                             <Checkbox
                                 mt="sm"
-                                {...form.getInputProps("acceptTerms", { type: "checkbox" })}
+                                {...form.getInputProps("acceptTerms", {
+                                    type: "checkbox",
+                                })}
                                 label={
                                     <Text size="sm">
                                         I agree to the{" "}
@@ -170,7 +224,7 @@ export function RegisterPage() {
                                             size="sm"
                                             component="button"
                                             type="button"
-                                            onClick={() => setTermsOpen(true)}
+                                            onClick={(): void => setTermsOpen(true)}
                                         >
                                             terms of use
                                         </Anchor>{" "}
@@ -179,7 +233,7 @@ export function RegisterPage() {
                                             size="sm"
                                             component="button"
                                             type="button"
-                                            onClick={() => setPrivacyOpen(true)}
+                                            onClick={(): void => setPrivacyOpen(true)}
                                         >
                                             privacy policy
                                         </Anchor>
@@ -199,8 +253,8 @@ export function RegisterPage() {
                                 </Anchor>
                             </Text>
 
-                            <Button type="submit" size="md" className="register-form__submit">
-                                Continue
+                            <Button type="submit" size="md" className="register-form__submit" disabled={isSubmitting}>
+                                {isSubmitting ? "Creating account…" : "Continue"}
                             </Button>
                         </Group>
                     </Stack>
@@ -210,4 +264,4 @@ export function RegisterPage() {
     );
 }
 
-export default RegisterPage;
+export default RegistrationPage;
