@@ -1,0 +1,23 @@
+@use "../variables" as *;
+
+.main-nav-drawer {
+    .mantine-Drawer-header {
+        padding-inline: $space-3;
+        padding-block: $space-3;
+        border-bottom: 1px solid $color-border-subtle;
+    }
+
+    .mantine-Drawer-title {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+    }
+
+    .mantine-Drawer-body {
+        padding-inline: $space-3;
+        padding-block: $space-3;
+    }
+
+    .mantine-NavLink-root {
+        border-radius: $radius-md;
+    }
+}

@@ -1,9 +1,7 @@
-// auth/AuthGuard.tsx
 import type React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { localStorageTokenStorage } from "../http";
-
-const PUBLIC_PATHS: string[] = ["/login"];
+import { PUBLIC_PATHS } from "./publicRoutes.ts";
 
 export function AuthGuard(): React.JSX.Element {
     const location = useLocation();

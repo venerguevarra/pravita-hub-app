@@ -4,15 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --open",
-    "build": "tsc -b && vite build",
+    "dev": "pnpm openapi:generate && vite --open",
+    "build": "tsc -b && pnpm openapi:generate && vite build",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
-    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/hub-api --additional-properties=useSingleRequestParameter=true"
+    "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/hub-api/__openapi-generated --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {
     "@mantine/core": "^8.3.9",

@@ -1,44 +1,63 @@
 import type React from "react";
-import { MainHeaderMenu } from "../components/MainHeaderMenu.tsx";
-import { UserProfileMenu } from "../components/UserProfileMenu.tsx";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Burger, Text } from "@mantine/core";
+import { MainHeaderMenu } from "../components/MainHeaderMenu";
+import { UserProfileMenu } from "../components/UserProfileMenu";
+import { MainDrawer } from "../components/MainDrawer.tsx";
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps): React.JSX.Element {
+    const year: number = new Date().getFullYear();
     const navigate = useNavigate();
+    const [navOpen, setNavOpen] = useState(false);
 
     return (
         <div className="main-layout">
             {/* Top nav bar */}
             <header className="main-header">
                 <div className="main-header-left">
+                    <Burger
+                        opened={navOpen}
+                        onClick={() => setNavOpen((o) => !o)}
+                        size="sm"
+                        className="main-header-burger"
+                        aria-label="Toggle navigation"
+                    />
+
                     <div className="main-header-logo" />
                     <div className="main-header-title">Pravita Hub</div>
                     <MainHeaderMenu />
                 </div>
 
-                {/* Right side stays the same */}
                 <div className="main-header-right">
                     <UserProfileMenu
                         userName="Admin"
                         triggerClassName="main-header-menu-trigger main-header-profile-trigger"
-                        // onProfileClick={() => navigate('/admin/profile')}
                         onSignOutClick={() => navigate("/login")}
                     />
                 </div>
             </header>
 
-            {/* Body: sidebar + main content */}
-            <div className="main-body">
-                <aside className="main-sidebar" aria-label="Primary navigation">
-                    <div className="main-sidebar-section-label">Navigation</div>
-                </aside>
+            {/* Navigation drawer */}
+            <MainDrawer opened={navOpen} onClose={() => setNavOpen(false)} />
 
+            {/* Body: main content */}
+            <div className="main-body">
                 <main className="main-main">{children}</main>
             </div>
+
+            {/* Footer */}
+            <footer className="main-footer">
+                <div className="main-footer-inner">
+                    <Text size="xs" c="dimmed">
+                        © {year} Pravita. All rights reserved.
+                    </Text>
+                </div>
+            </footer>
         </div>
     );
 }
