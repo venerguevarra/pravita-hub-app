@@ -1,12 +1,12 @@
 // LoginPage.tsx
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
+import { Anchor, Button, PasswordInput, Stack, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { login, LoginError } from "../services/authService.ts";
-import type { AuthenticationDto } from "../api/hub-api";
+import type { AuthenticationDto } from "../api/hub-api/__openapi-generated";
 import { FormBanner } from "../components/FormBanner.tsx";
 import { localStorageTokenStorage } from "../http";
 
@@ -111,6 +111,15 @@ export const LoginPage = (): React.JSX.Element => {
                     <Button type="submit" fullWidth className="auth-submit-button" loading={isSubmitting}>
                         Sign in
                     </Button>
+
+                    <Stack gap="xs" mt="md" align="center">
+                        <Text size="sm" c="dimmed">
+                            Don&apos;t have an account?{" "}
+                            <Anchor component={Link} to="/register" size="sm">
+                                Sign up
+                            </Anchor>
+                        </Text>
+                    </Stack>
                 </Stack>
             </form>
         </AuthLayout>

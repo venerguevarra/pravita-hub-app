@@ -1,5 +1,5 @@
-import { Configuration } from "./hub-api/configuration";
-import { AuthenticationApi, TenantsApi, RolesApi, SystemModulesApi } from "./hub-api/api";
+import { Configuration } from "./hub-api/__openapi-generated/configuration";
+import { AuthenticationApi, TenantsApi, RolesApi, SystemModulesApi } from "./hub-api/__openapi-generated/api";
 
 import { axiosInstance } from "../http";
 import { pravitaAdminApiBaseUrl } from "../env";

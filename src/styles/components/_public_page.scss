@@ -1,0 +1,87 @@
+@use "../variables" as *;
+
+.public-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: $color-background-page;
+}
+
+.public-page__header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    background: $color-surface;
+}
+
+.public-page__header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: $space-3;
+}
+
+.public-page__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: $color-brand-heading;
+}
+
+.public-page__brand-mark {
+    width: 24px;
+    height: 24px;
+    border-radius: $radius-full;
+    background: linear-gradient(
+                    135deg,
+                    $color-header-logo-from,
+                    $color-header-logo-to
+    );
+}
+
+.public-page__brand-text {
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.public-page__main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    padding-block: $space-6;
+}
+
+.public-page__main-inner {
+    max-width: 720px;
+}
+
+.public-page__content {
+    max-width: 640px;
+}
+
+.public-page__card {
+    margin-top: $space-4;
+    padding: $space-4;
+    border-radius: $radius-lg; // was $radius-3
+    background: $color-surface;
+    box-shadow: $shadow-soft;
+}
+
+.register-page__form-placeholder {
+    padding: $space-3;
+    border-radius: $radius-md; // was $radius-2
+    background-color: rgba(15, 23, 42, 0.02);
+}
+
+.public-page__footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    background: $color-surface;
+}
+
+.public-page__footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: $space-3;
+}

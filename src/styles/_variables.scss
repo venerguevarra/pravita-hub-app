@@ -1,41 +1,110 @@
+// src/styles/_variables.scss
+@use "sass:color";
+
+// ─────────────────────────────────────────────────────────────
 // Typography
+// ─────────────────────────────────────────────────────────────
+
 $font-family-sans:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "SF Pro Text",
-    "Segoe UI",
-    sans-serif;
-$font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Segoe UI",
+        sans-serif;
+
+$font-family-mono:
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        "Courier New",
+        monospace;
 
 $font-size-base: 16px;
 $line-height-base: 1.5;
 
-// Colors – base
+// ─────────────────────────────────────────────────────────────
+// Colors – base neutrals
+// ─────────────────────────────────────────────────────────────
+
 $color-white: #ffffff;
-$color-bg: #e9f3fb;
-$color-bg-accent: #dbeafe; // used in app-root gradient
-$color-surface: $color-white;
-$color-border-subtle: #d3e2f0;
-$color-fg: #0f172a;
-$color-fg-muted: #6b7280;
+$color-black: #020617;
 
-// Colors – accent & states
-$color-accent: #0ea5e9;
-$color-accent-soft: rgba(14, 165, 233, 0.12);
-$color-accent-deep: #0369a1;
-$color-danger: #ef4444;
+$color-neutral-50:  #f9fafb;
+$color-neutral-100: #f3f4f6;
+$color-neutral-200: #e5e7eb;
+$color-neutral-300: #d1d5db;
+$color-neutral-400: #9ca3af;
+$color-neutral-500: #6b7280;
+$color-neutral-600: #4b5563;
+$color-neutral-700: #374151;
+$color-neutral-800: #1f2933;
+$color-neutral-900: #020617;
 
-// Brand-specific colors (Auth + headings)
-$color-brand-primary: #008ea9; // Sign-in button base
-$color-brand-primary-hover: #398b96; // Sign-in hover state
-$color-brand-heading: #0d1b2a; // Auth page title
+// ─────────────────────────────────────────────────────────────
+// Brand – medical (teal + clinical blue)
+// ─────────────────────────────────────────────────────────────
+
+$color-brand-primary:        #008ea9;   // main medical teal
+$color-brand-primary-soft:   #e0f5f8;   // light teal background
+$color-brand-primary-strong: #026579;   // deeper teal for emphasis
+$color-brand-primary-hover: color.adjust($color-brand-primary, $lightness: -6%);
+
+$color-brand-secondary:      #0a84ff;   // complementary clinical blue
+$color-brand-secondary-soft: #e0efff;
 
 // Header logo gradient
-$color-header-logo-from: #0fb5a9;
-$color-header-logo-to: #0a84ff;
+$color-header-logo-from: $color-brand-primary;
+$color-header-logo-to:   $color-brand-secondary;
 
+// ─────────────────────────────────────────────────────────────
+// App backgrounds & text
+// ─────────────────────────────────────────────────────────────
+
+$color-bg:            $color-neutral-50;  // overall page background
+$color-bg-accent:     #e0f2fe;            // subtle blue panels / hero
+$color-surface:       $color-white;       // cards, nav, sheets
+
+$color-border-subtle: $color-neutral-200;
+$color-border-strong: $color-neutral-300;
+
+$color-fg:            #0f172a;            // primary text
+$color-fg-muted:      $color-neutral-500; // secondary text
+$color-brand-heading: #0f172a;            // headings (auth/public)
+
+// Generic page background for unauthenticated public pages
+$color-background-page: $color-neutral-50;
+
+// ─────────────────────────────────────────────────────────────
+// Semantic state colors (clinical UI)
+// ─────────────────────────────────────────────────────────────
+
+$color-info:        $color-brand-secondary;
+$color-info-soft:   rgba($color-brand-secondary, 0.12);
+
+$color-success:      #16a34a;
+$color-success-soft: rgba(22, 163, 74, 0.12);
+
+$color-warning:      #f59e0b;
+$color-warning-soft: rgba(245, 158, 11, 0.12);
+
+$color-danger:       #ef4444;
+$color-danger-soft:  rgba(239, 68, 68, 0.12);
+
+// ─────────────────────────────────────────────────────────────
+// Legacy / utility aliases (to keep older names working)
+// ─────────────────────────────────────────────────────────────
+
+$color-accent:       $color-brand-secondary;
+$color-accent-soft:  rgba($color-brand-secondary, 0.12);
+$color-accent-deep:         color.adjust($color-brand-secondary, $lightness: -15%);
+
+// ─────────────────────────────────────────────────────────────
 // Spacing scale
+// ─────────────────────────────────────────────────────────────
+
 $space-1: 0.25rem;
 $space-2: 0.5rem;
 $space-3: 0.75rem;
@@ -44,18 +113,30 @@ $space-5: 1.25rem;
 $space-6: 1.5rem;
 $space-8: 2rem;
 
+// ─────────────────────────────────────────────────────────────
 // Radii
+// ─────────────────────────────────────────────────────────────
+
 $radius-sm: 0.25rem;
 $radius-md: 0.5rem;
 $radius-lg: 0.75rem;
 $radius-full: 9999px;
 
+// ─────────────────────────────────────────────────────────────
 // Shadows
+// ─────────────────────────────────────────────────────────────
+
 $shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.12);
 
+// ─────────────────────────────────────────────────────────────
 // Z-index
+// ─────────────────────────────────────────────────────────────
+
 $z-nav: 100;
 $z-overlay: 1000;
 
+// ─────────────────────────────────────────────────────────────
 // Component-specific
+// ─────────────────────────────────────────────────────────────
+
 $menu-width: 220px;
