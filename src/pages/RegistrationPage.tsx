@@ -93,9 +93,16 @@ export function RegisterPage() {
     });
 
     return (
-        <>
-            <TermsOfUseDialog opened={termsOpen} onClose={() => setTermsOpen(false)} />
-            <PrivacyPolicyDialog opened={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+        <PublicPageLayout
+            title="Create your account"
+            subtitle="Join Pravita Hub"
+            description="Set up your account to access Pravita Hub. Use your work email if you are joining an existing organization."
+        >
+            <Stack gap="xl">
+                <Text size="sm" c="dimmed">
+                    We’ll ask for your basic information now. You can complete your profile and organization details
+                    after you sign in.
+                </Text>
 
             <PublicPageLayout
                 title="Create your account"
@@ -109,25 +116,13 @@ export function RegisterPage() {
                                 Account details
                             </Title>
 
-                            {/* Name row */}
-                            <div className="register-form__grid">
-                                <TextInput
-                                    withAsterisk
-                                    label="First name"
-                                    size="md"
-                                    radius="md"
-                                    autoComplete="given-name"
-                                    {...form.getInputProps("firstName")}
-                                />
-                                <TextInput
-                                    withAsterisk
-                                    label="Last name"
-                                    size="md"
-                                    radius="md"
-                                    autoComplete="family-name"
-                                    {...form.getInputProps("lastName")}
-                                />
-                            </div>
+                    <div className="register-page__form-placeholder">
+                        <Text size="sm" c="dimmed">
+                            Registration form fields go here (email, password, confirm password, name, etc.). We will
+                            implement this in the next step.
+                        </Text>
+                    </div>
+                </Stack>
 
                             {/* Email + hint */}
                             <TextInput

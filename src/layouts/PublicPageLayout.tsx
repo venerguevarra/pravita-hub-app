@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { Anchor, Container, Group, Stack, Text, Title } from "@mantine/core";
+import { Container, Group, Stack, Text, Title } from "@mantine/core";
 
 export interface PublicPageLayoutProps {
     title: string;

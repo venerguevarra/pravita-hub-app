@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm openapi:generate && vite --open",
-    "build": "tsc -b && pnpm openapi:generate && vite build",
+    "build": "pnpm openapi:generate && tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,css,scss,sass,md,json}\"",
     "preview": "vite preview",
     "test": "vitest",
     "test:watch": "vitest --watch",
+    "typecheck": "pnpm openapi:generate && tsc -b",
     "openapi:generate": "openapi-generator-cli generate -i openapi/api-docs.yaml -g typescript-axios -o src/api/hub-api/__openapi-generated --additional-properties=useSingleRequestParameter=true"
   },
   "dependencies": {

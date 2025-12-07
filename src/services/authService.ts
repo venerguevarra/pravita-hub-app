@@ -1,9 +1,5 @@
 import axios from "axios";
-import type {
-    AuthenticationApiLoginRequest,
-    AuthenticationDto,
-    AuthenticationTokenDto,
-} from "../api/hub-api/__openapi-generated";
+import type { AuthenticationApiLoginRequest, AuthenticationDto, AuthenticationTokenDto } from "../api/hub-api/__openapi-generated";
 import { authenticationApi } from "../api/hubApiClient.ts";
 import { type AuthRequestConfig, localStorageTokenStorage } from "../http";
 
