@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Burger, Text } from "@mantine/core";
 import { MainHeaderMenu } from "../components/MainHeaderMenu";
 import { UserProfileMenu } from "../components/UserProfileMenu";
 import { MainDrawer } from "../components/MainDrawer.tsx";
-import UserService from "../services/userService.ts";
 
 interface MainLayoutProps {
     children: React.ReactNode;

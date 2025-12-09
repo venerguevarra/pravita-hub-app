@@ -20,6 +20,7 @@ export function RootApp(): React.JSX.Element {
             const currentUser = await userService.getCurrentUser();
             setCurrentUser(currentUser);
             console.log('~~ currentUser', currentUser);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err: unknown) {
             setError("Failed to load user");
         } finally {
