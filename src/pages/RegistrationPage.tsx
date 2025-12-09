@@ -189,7 +189,10 @@ export function RegistrationPage(): React.JSX.Element {
                                 {...form.getInputProps("email")}
                             />
 
-                            <Banner variant="info" message="For organization accounts, use your organization email address." />
+                            <Banner
+                                variant="info"
+                                message="For organization accounts, use your organization email address."
+                            />
 
                             <PasswordInput
                                 withAsterisk

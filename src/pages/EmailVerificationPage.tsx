@@ -56,20 +56,14 @@ export function EmailVerificationPage(): React.JSX.Element {
     const hasResentOnLoadRef = useRef<boolean>(false);
 
     useEffect((): void => {
-        if (
-            shouldResendOnLoad &&
-            email !== "your email" &&
-            !hasResentOnLoadRef.current
-        ) {
+        if (shouldResendOnLoad && email !== "your email" && !hasResentOnLoadRef.current) {
             hasResentOnLoadRef.current = true;
             setIsResending(true);
             setHasError(false);
 
-            void userRegistrationService
-                .resendActivationCode(email)
-                .finally((): void => {
-                    setIsResending(false);
-                });
+            void userRegistrationService.resendActivationCode(email).finally((): void => {
+                setIsResending(false);
+            });
         }
 
         startResendTimer();
@@ -89,9 +83,7 @@ export function EmailVerificationPage(): React.JSX.Element {
         }
 
         if (data?.errors instanceof Set) {
-            const first = data.errors.values().next().value as
-                | { message?: string }
-                | undefined;
+            const first = data.errors.values().next().value as { message?: string } | undefined;
             if (first?.message) {
                 return first.message;
             }
@@ -181,11 +173,7 @@ export function EmailVerificationPage(): React.JSX.Element {
         : `We've sent a verification code to ${maskEmail(email)}.`;
 
     return (
-        <PublicPageLayout
-            title={layoutTitle}
-            subtitle={layoutSubtitle}
-            description={layoutDescription}
-        >
+        <PublicPageLayout title={layoutTitle} subtitle={layoutSubtitle} description={layoutDescription}>
             <div className="verify-page">
                 {isVerified ? (
                     <Center className="verify-success-page">
@@ -241,12 +229,7 @@ export function EmailVerificationPage(): React.JSX.Element {
                         <Text size="sm" c="dimmed">
                             Didn’t receive the code{" "}
                             {resendSeconds <= 0 ? (
-                                <Anchor
-                                    component="button"
-                                    type="button"
-                                    size="sm"
-                                    onClick={handleResend}
-                                >
+                                <Anchor component="button" type="button" size="sm" onClick={handleResend}>
                                     {isResending ? "Resending…" : "Resend"}
                                 </Anchor>
                             ) : (

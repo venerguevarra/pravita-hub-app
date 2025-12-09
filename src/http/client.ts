@@ -1,5 +1,9 @@
 import axios, {
-    AxiosError, AxiosHeaders, type AxiosInstance, type AxiosResponse, type InternalAxiosRequestConfig,
+    AxiosError,
+    AxiosHeaders,
+    type AxiosInstance,
+    type AxiosResponse,
+    type InternalAxiosRequestConfig,
 } from "axios";
 import type { AuthRequestConfig, HttpClientOptions, TokenPair } from "./types";
 
@@ -12,112 +16,131 @@ type InternalAuthConfig<D = unknown> = InternalAxiosRequestConfig<D> & AuthReque
  * - helper for cancellable requests
  */
 export function createHttpClient(options: HttpClientOptions): {
-    axios: AxiosInstance; requestWithCancel: <T = unknown>(config: AuthRequestConfig) => {
-        promise: Promise<AxiosResponse<T>>; cancel: () => void; signal: AbortSignal;
+    axios: AxiosInstance;
+    requestWithCancel: <T = unknown>(
+        config: AuthRequestConfig,
+    ) => {
+        promise: Promise<AxiosResponse<T>>;
+        cancel: () => void;
+        signal: AbortSignal;
     };
 } {
     const { baseURL, tokenStorage, refreshToken, onLogout, axiosConfig } = options;
 
     const instance = axios.create({
-        baseURL, ...axiosConfig,
+        baseURL,
+        ...axiosConfig,
     });
 
     let isRefreshing: boolean = false;
     let refreshPromise: Promise<TokenPair> | null = null;
 
-    instance.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-        const authConfig: InternalAxiosRequestConfig<unknown> & AuthRequestConfig<unknown> = config as InternalAuthConfig;
+    instance.interceptors.request.use(
+        (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+            const authConfig: InternalAxiosRequestConfig<unknown> & AuthRequestConfig<unknown> =
+                config as InternalAuthConfig;
 
-        if (authConfig.skipAuth) {
+            if (authConfig.skipAuth) {
+                return authConfig;
+            }
+
+            const url: string = authConfig.url ?? "";
+
+            // Only protect these backend routes
+            const isProtected: boolean =
+                url.startsWith("/platform-api") || url.startsWith("/tenant-api") || url.startsWith("/api");
+
+            if (!isProtected) {
+                return authConfig;
+            }
+
+            const token: string | null = tokenStorage.getAccessToken();
+            if (token) {
+                const headers: AxiosHeaders = AxiosHeaders.from(authConfig.headers ?? {});
+                headers.set("Authorization", `Bearer ${token}`);
+                authConfig.headers = headers;
+            }
+
             return authConfig;
-        }
-
-        const url: string = authConfig.url ?? "";
-
-        // Only protect these backend routes
-        const isProtected: boolean = url.startsWith("/platform-api") || url.startsWith("/tenant-api") || url.startsWith("/api");
-
-        if (!isProtected) {
-            return authConfig;
-        }
-
-        const token: string | null = tokenStorage.getAccessToken();
-        if (token) {
-            const headers: AxiosHeaders = AxiosHeaders.from(authConfig.headers ?? {});
-            headers.set("Authorization", `Bearer ${token}`);
-            authConfig.headers = headers;
-        }
-
-        return authConfig;
-    }, (error) => Promise.reject(error));
+        },
+        (error) => Promise.reject(error),
+    );
 
     /**
      * RESPONSE INTERCEPTOR
      * - on 401, try to refresh once, then retry original request
      */
-    instance.interceptors.response.use((response) => response, async (error: AxiosError) => {
-        const status = error.response?.status;
-        const originalConfig = error.config as InternalAuthConfig | undefined;
-        const url: string = originalConfig?.url ?? "";
-        const isProtected: boolean = url.startsWith("/platform-api") || url.startsWith("/tenant-api");
+    instance.interceptors.response.use(
+        (response) => response,
+        async (error: AxiosError) => {
+            const status = error.response?.status;
+            const originalConfig = error.config as InternalAuthConfig | undefined;
+            const url: string = originalConfig?.url ?? "";
+            const isProtected: boolean = url.startsWith("/platform-api") || url.startsWith("/tenant-api");
 
-        // ⬇️ add `originalConfig?.skipAuth` here
-        if (!originalConfig || originalConfig._retry || originalConfig.skipAuth || status !== 401 || !isProtected) {
-            return Promise.reject(error);
-        }
+            // ⬇️ add `originalConfig?.skipAuth` here
+            if (!originalConfig || originalConfig._retry || originalConfig.skipAuth || status !== 401 || !isProtected) {
+                return Promise.reject(error);
+            }
 
-        originalConfig._retry = true;
+            originalConfig._retry = true;
 
-        const refreshTokenValue = tokenStorage.getRefreshToken();
-        if (!refreshTokenValue) {
-            tokenStorage.clearTokens();
-            onLogout?.();
-            return Promise.reject(error);
-        }
+            const refreshTokenValue = tokenStorage.getRefreshToken();
+            if (!refreshTokenValue) {
+                tokenStorage.clearTokens();
+                onLogout?.();
+                return Promise.reject(error);
+            }
 
-        if (!isRefreshing) {
-            isRefreshing = true;
-            refreshPromise = refreshToken(refreshTokenValue)
-                .then((tokens) => {
-                    tokenStorage.setTokens(tokens);
-                    return tokens;
-                })
-                .catch((refreshError) => {
-                    tokenStorage.clearTokens();
-                    onLogout?.();
-                    throw refreshError;
-                })
-                .finally(() => {
-                    isRefreshing = false;
-                });
-        }
+            if (!isRefreshing) {
+                isRefreshing = true;
+                refreshPromise = refreshToken(refreshTokenValue)
+                    .then((tokens) => {
+                        tokenStorage.setTokens(tokens);
+                        return tokens;
+                    })
+                    .catch((refreshError) => {
+                        tokenStorage.clearTokens();
+                        onLogout?.();
+                        throw refreshError;
+                    })
+                    .finally(() => {
+                        isRefreshing = false;
+                    });
+            }
 
-        try {
-            const newTokens = await refreshPromise!;
-            const newAccessToken = newTokens.accessToken;
+            try {
+                const newTokens = await refreshPromise!;
+                const newAccessToken = newTokens.accessToken;
 
-            const headers = AxiosHeaders.from(originalConfig.headers ?? {});
-            headers.set("Authorization", `Bearer ${newAccessToken}`);
-            originalConfig.headers = headers;
+                const headers = AxiosHeaders.from(originalConfig.headers ?? {});
+                headers.set("Authorization", `Bearer ${newAccessToken}`);
+                originalConfig.headers = headers;
 
-            return instance(originalConfig);
-        } catch (refreshError) {
-            return Promise.reject(refreshError);
-        }
-    });
+                return instance(originalConfig);
+            } catch (refreshError) {
+                return Promise.reject(refreshError);
+            }
+        },
+    );
 
     /**
      * Helper to create a cancellable request.
      * - returns { promise, cancel, signal }
      * - you can pass your own signal if you want; otherwise we create one.
      */
-    const requestWithCancel = <T = unknown>(config: AuthRequestConfig): {
-        promise: Promise<AxiosResponse<T>>; cancel: () => void; signal: AbortSignal;
+    const requestWithCancel = <T = unknown>(
+        config: AuthRequestConfig,
+    ): {
+        promise: Promise<AxiosResponse<T>>;
+        cancel: () => void;
+        signal: AbortSignal;
     } => {
         const controller = new AbortController();
 
         const finalConfig: AuthRequestConfig = {
-            ...config, signal: config.signal ?? controller.signal,
+            ...config,
+            signal: config.signal ?? controller.signal,
         };
 
         const promise = instance.request<T>(finalConfig);
@@ -127,6 +150,7 @@ export function createHttpClient(options: HttpClientOptions): {
     };
 
     return {
-        axios: instance, requestWithCancel,
+        axios: instance,
+        requestWithCancel,
     };
 }
