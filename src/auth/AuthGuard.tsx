@@ -1,15 +1,14 @@
 import type React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { isPublicPath } from "./publicRoutes.ts";
 import { isAuthenticated } from "../auth/session.ts";
 
 export function AuthGuard(): React.JSX.Element {
     const location = useLocation();
     const path: string = location.pathname;
 
-    const isUserAuthenticated: boolean = !!isAuthenticated();
+    const isUserAuthenticated: boolean = isAuthenticated();
 
-    if (!isUserAuthenticated && !isPublicPath(path)) {
+    if (!isUserAuthenticated) {
         return <Navigate to="/login" replace state={{ from: location }} />;
     }
 

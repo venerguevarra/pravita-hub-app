@@ -1,6 +1,9 @@
 import type React from "react";
 import { Avatar, Menu } from "@mantine/core";
-import { logout } from "../services/authService.ts";
+import { logout } from "../services/authService";
+import { useUserStore } from "../stores/userStore";
+import { getAvatarInitials } from "../util/userUtil";
+import type { CurrentUserDto } from "../api/hub-api/__openapi-generated";
 
 export interface UserProfileMenuProps {
     userName: string;
@@ -11,13 +14,12 @@ export interface UserProfileMenuProps {
 }
 
 export function UserProfileMenu({
-    userName,
-    initials,
     onProfileClick,
     onSignOutClick,
     triggerClassName,
 }: UserProfileMenuProps): React.JSX.Element {
-    const avatarInitials: string = initials ?? userName.charAt(0).toUpperCase();
+    const currentUser: CurrentUserDto | null = useUserStore((state) => state.currentUser);
+    const avatarInitials: string = getAvatarInitials(currentUser ??  {});
 
     const handleProfileClick = (): void => {
         if (onProfileClick) {
@@ -39,7 +41,6 @@ export function UserProfileMenu({
                     <Avatar radius="xl" size={24} color="cyan">
                         {avatarInitials}
                     </Avatar>
-                    <span>{userName}</span>
                 </button>
             </Menu.Target>
 

@@ -28,16 +28,12 @@ const MIN_PASSWORD_LENGTH = 6;
 const MESSAGE_INVALID_EMAIL = "Please enter a valid email address.";
 const MESSAGE_PASSWORD_TOO_SHORT = "Your password must be at least 6 characters.";
 
-const MESSAGE_INVALID_CREDENTIALS =
-    "Invalid credentials. Please check your details and try again.";
+const MESSAGE_INVALID_CREDENTIALS = "Invalid credentials. Please check your details and try again.";
 const MESSAGE_INVALID_USERNAME = "We couldn’t find an account with this email.";
 const MESSAGE_INVALID_PASSWORD = "The password you entered is incorrect. Please try again.";
-const MESSAGE_GENERIC_LOGIN_ERROR =
-    "We couldn’t sign you in. Please check your details and try again.";
-const MESSAGE_UNEXPECTED_LOGIN_ERROR =
-    "Something went wrong while signing you in. Please try again later.";
-const MESSAGE_INACTIVE_ACCOUNT =
-    "This account is not active yet. Verify your email to continue.";
+const MESSAGE_GENERIC_LOGIN_ERROR = "We couldn’t sign you in. Please check your details and try again.";
+const MESSAGE_UNEXPECTED_LOGIN_ERROR = "Something went wrong while signing you in. Please try again later.";
+const MESSAGE_INACTIVE_ACCOUNT = "This account is not active yet. Verify your email to continue.";
 
 // Banner titles
 const TITLE_SIGN_IN_FAILED = "Sign-in failed";
@@ -65,12 +61,9 @@ export const LoginPage = (): React.JSX.Element => {
         },
         validateInputOnBlur: true,
         validate: {
-            email: (value: string): string | null =>
-                EMAIL_REGEX.test(value) ? null : MESSAGE_INVALID_EMAIL,
+            email: (value: string): string | null => (EMAIL_REGEX.test(value) ? null : MESSAGE_INVALID_EMAIL),
             password: (value: string): string | null =>
-                value.trim().length >= MIN_PASSWORD_LENGTH
-                    ? null
-                    : MESSAGE_PASSWORD_TOO_SHORT,
+                value.trim().length >= MIN_PASSWORD_LENGTH ? null : MESSAGE_PASSWORD_TOO_SHORT,
         },
     });
 
@@ -143,19 +136,14 @@ export const LoginPage = (): React.JSX.Element => {
     };
 
     const showErrorBanner: boolean = bannerError !== null && inactiveEmail === null;
-    const showActivationBanner: boolean =
-        inactiveEmail !== null && !hasFormErrors && bannerError === null;
+    const showActivationBanner: boolean = inactiveEmail !== null && !hasFormErrors && bannerError === null;
 
     return (
         <AuthLayout>
             <form onSubmit={form.onSubmit(handleSubmit)} noValidate>
                 <Stack gap="md">
                     {showErrorBanner && (
-                        <Banner
-                            variant="error"
-                            title={TITLE_SIGN_IN_FAILED}
-                            message={bannerError as string}
-                        />
+                        <Banner variant="error" title={TITLE_SIGN_IN_FAILED} message={bannerError as string} />
                     )}
 
                     {showActivationBanner && inactiveEmail && (
@@ -197,12 +185,7 @@ export const LoginPage = (): React.JSX.Element => {
                         {...form.getInputProps("password")}
                     />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        className="auth-submit-button"
-                        loading={isSubmitting}
-                    >
+                    <Button type="submit" fullWidth className="auth-submit-button" loading={isSubmitting}>
                         Sign in
                     </Button>
 

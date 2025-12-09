@@ -15,15 +15,6 @@ export function MainLayout({ children }: MainLayoutProps): React.JSX.Element {
     const year: number = new Date().getFullYear();
     const navigate = useNavigate();
     const [navOpen, setNavOpen] = useState(false);
-    const userService = UserService.getInstance();
-
-    useEffect(() => {
-        userService.getCurrentUser().then((response) => {
-            console.log("~~ Current user data:", response.data);
-        }).catch((error) => {
-            console.error("Error fetching current user:", error);
-        });
-    }, []);
 
     return (
         <div className="main-layout">
