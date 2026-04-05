@@ -6,6 +6,277 @@ This app runs against the local backend in the sibling repo:
 
 - `/Users/guevarra/workspace/pravita-hub-api`
 
+Additional implementation notes live in:
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+
+## How the app is built
+
+`pravita-hub-app` is a Vite + React + TypeScript application.
+
+Build and runtime flow:
+
+- Vite handles local development and production bundling
+- TypeScript handles type-checking
+- the app generates a TypeScript Axios client from the checked-in OpenAPI spec before `dev`, `build`, and `typecheck`
+- the browser app talks to `pravita-hub-api` using that generated client plus a shared Axios wrapper
+- the full app is wrapped in `DSProvider` from `pravita-react-ds` so Mantine components inherit the Pravita theme
+
+Important scripts:
+
+```bash
+pnpm dev
+pnpm build
+pnpm preview
+pnpm typecheck
+pnpm test
+pnpm lint
+```
+
+OpenAPI generation script:
+
+```bash
+pnpm openapi:generate
+```
+
+## How `pravita-hub-app` consumes `pravita-react-ds`
+
+The app consumes the design system in these ways:
+
+- `pravita-react-ds` is installed as a GitHub package dependency
+- `DSProvider` wraps the full app in `src/main.tsx`
+- Mantine components used directly in the app inherit DS theme values through that provider
+- the app is ready to consume shared DS components, but today it mainly uses the DS as a theming layer
+
+Current important detail:
+
+- the app does not use the sibling `pravita-react-ds` folder directly as a workspace link
+- it consumes the GitHub dependency version declared in `package.json`
+
+## Setup flow
+
+Recommended local setup order:
+
+1. Install required tools.
+2. Install frontend dependencies in `pravita-hub-app`.
+3. Create `.env.local` for the app.
+4. Start PostgreSQL for `pravita-hub-api`.
+5. Start the backend API.
+6. Start the frontend app with `pnpm dev`.
+
+Short version:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
+pnpm install
+```
+
+Create `.env.local`:
+
+```env
+VITE_ENVIRONMENT=development
+VITE_PRAVITA_ADMIN_API_BASE_URL=http://localhost:9001
+```
+
+Start backend database:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-api
+docker compose -f docker-compose.db.yml up -d
+```
+
+Start backend API:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-api
+mvn spring-boot:run
+```
+
+Start frontend:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
+pnpm dev
+```
+
+## Build flow
+
+Local production build:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
+pnpm build
+```
+
+What `pnpm build` does:
+
+1. regenerates the OpenAPI client
+2. runs TypeScript project build checks
+3. creates the Vite production bundle
+
+Preview the production build locally:
+
+```bash
+pnpm preview
+```
+
+## GitHub Actions build and deploy flow
+
+This repo uses GitHub Actions for CI, OpenAPI validation, and GitHub Pages deployment.
+
+### `pravita-hub-app` workflows
+
+Current workflows in this repo:
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/gh-pages.yml`
+- `.github/workflows/validate-openapi.yml`
+
+### CI workflow
+
+`ci.yml` runs on:
+
+- pushes to `main`
+- pull requests targeting `main`
+
+What it does:
+
+1. checks out the repo
+2. installs `pnpm` 9
+3. sets up Node 20
+4. installs dependencies with `pnpm install`
+5. runs `pnpm lint`
+6. runs `pnpm build`
+
+Important detail:
+
+- `pnpm build` already includes OpenAPI client generation before the TypeScript and Vite build steps
+
+### OpenAPI validation workflow
+
+`validate-openapi.yml` runs on:
+
+- pushes to `main`
+- pushes to `develop`
+- pull requests targeting `main`
+- pull requests targeting `develop`
+- manual workflow dispatch
+
+What it does:
+
+1. checks out the repo
+2. sets up Node 20
+3. installs `swagger-cli`
+4. finds YAML files under `openapi/`
+5. validates each OpenAPI file with `swagger-cli validate`
+
+Purpose:
+
+- catch broken OpenAPI YAML before frontend generation or deployment
+
+### GitHub Pages deployment workflow
+
+`gh-pages.yml` runs on:
+
+- pushes to `main`
+
+What it does:
+
+1. checks out the repo
+2. installs `pnpm` 9
+3. sets up Node 20
+4. installs dependencies
+5. runs `pnpm build`
+6. copies `dist/index.html` to `dist/404.html` for SPA routing fallback
+7. uploads the `dist/` folder as the Pages artifact
+8. deploys that artifact to GitHub Pages
+
+Purpose:
+
+- publish the built Vite app to GitHub Pages after changes land on `main`
+
+## Related GitHub Actions in `pravita-react-ds`
+
+The design system repo has its own separate workflows:
+
+- `.github/workflows/ci.yml`
+- `.github/workflows/storybook-pages.yml`
+- `.github/workflows/tag-release.yml`
+
+### DS CI
+
+The DS `ci.yml` runs lint and build on:
+
+- pushes to `main`
+- pull requests targeting `main`
+
+### DS Storybook deploy
+
+The DS `storybook-pages.yml` builds Storybook and deploys it to GitHub Pages on:
+
+- pushes to `main`
+
+### DS tag release
+
+The DS `tag-release.yml` is manually triggered and can:
+
+- bump the DS package version if no version is provided
+- commit the version bump
+- create a `v<version>` git tag
+- push the tag to origin
+
+Why this matters for `pravita-hub-app`:
+
+- `pravita-hub-app` consumes `pravita-react-ds` from GitHub
+- when the DS version changes, the app needs its dependency reference updated before it will consume the new DS version
+
+## Consumption guidelines
+
+Use these rules when deciding whether code belongs in `pravita-hub-app` or `pravita-react-ds`.
+
+### Put code in `pravita-react-ds` when:
+
+- the UI primitive should be reused across multiple Pravita apps
+- you are changing design tokens, theme defaults, spacing, radius, or typography
+- you are creating a reusable presentational component
+
+### Put code in `pravita-hub-app` when:
+
+- the component is tied to routing, auth, API calls, page workflows, or backend DTOs
+- the UI is page-specific
+- the styling is specific to Hub layouts or screens
+
+### Prefer DS-first for reusable UI
+
+If a component pattern is likely to repeat, promote it into the DS instead of copying it inside the app.
+
+### Keep backend-aware logic out of the DS
+
+Do not move these concerns into `pravita-react-ds`:
+
+- auth/session logic
+- Axios clients
+- OpenAPI DTOs
+- route guards
+- feature stores
+- page-specific workflows
+
+## Working on both repos
+
+When changing the design system and the app together, remember:
+
+- `pravita-hub-app` currently points to a GitHub version of `pravita-react-ds`
+- local edits in the sibling DS repo are not automatically consumed by the app
+
+Typical workflow:
+
+1. make the DS change in `pravita-react-ds`
+2. verify the DS locally
+3. publish or tag the DS version to consume
+4. update the DS dependency in `pravita-hub-app`
+5. run `pnpm install`
+6. verify the app
+
 ## Local prerequisites
 
 You need these tools installed:
