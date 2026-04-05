@@ -1,234 +1,208 @@
-# 🏠 Pravita Hub App (`pravita-hub-app`)
+# Pravita Hub App
 
-**Pravita Hub App** is a React + TypeScript application built with **Vite** that **consumes the shared design system** package [`pravita-react-ds`].  
-It’s the main “host” app that uses the central UI library and is deployed via **GitHub Pages**.
+React + TypeScript frontend for Pravita Hub, built with Vite.
 
----
+This app runs against the local backend in the sibling repo:
 
-## 🚀 Tech Stack
+- `/Users/guevarra/workspace/pravita-hub-api`
 
-- ⚛️ **React 19** + **TypeScript**
-- ⚡ **Vite** for fast dev & bundling
-- 🎨 **Mantine** for underlying UI primitives
-- 📦 **pravita-react-ds** as the shared design system
-- 📄 Deployed to **GitHub Pages** via GitHub Actions
+## Local prerequisites
 
----
+You need these tools installed:
 
-## 1. Prerequisites
+- Node.js 20+
+- `pnpm` 9+
+- Git
+- Java 21+ and Maven 3.8+ if you want to run the backend locally
+- Docker Desktop if you want to start the backend database with Docker Compose
 
-- **Node.js**: v20+
-- **pnpm**: v9+
-- **Git**
+## How to install the tools
 
-Check:
+### macOS with Homebrew
+
+Install Homebrew if you do not already have it:
 
 ```bash
-node -v
-pnpm -v
-git --version
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
----
-
-## 2. Getting Started
-
-Clone the repo:
+Install the required tools:
 
 ```bash
-git clone https://github.com/<your-username>/pravita-hub-app.git
-cd pravita-hub-app
+brew install git node pnpm openjdk@21 maven
+brew install --cask docker
+```
+
+After installing Java, add it to your shell profile if needed:
+
+```bash
+echo 'export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Start Docker Desktop once after installation so `docker compose` is available.
+
+### Verify tool installation
+
+Run:
+
+```bash
+git --version
+node -v
+pnpm -v
+java -version
+mvn -v
+docker version
+docker compose version
+```
+
+## Project setup
+
+### 1. Install frontend dependencies
+
+From the app directory:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
 pnpm install
 ```
 
-> Replace `<your-username>` with your GitHub username.
+Notes:
 
----
+- This project depends on `pravita-react-ds`, which is installed from GitHub during `pnpm install`.
+- Network access is required unless the package is already cached locally.
 
-## 3. Relationship to `pravita-react-ds`
+### 2. Configure frontend environment variables
 
-This app depends on the shared design system package:
+Create `/Users/guevarra/workspace/pravita-hub-app/.env.local` with:
 
-```jsonc
-"dependencies": {
-  "pravita-react-ds": "^0.1.0",
-  "@mantine/core": "^8.3.9",
-  "@mantine/hooks": "^8.3.9",
-  "@mantine/notifications": "^8.3.9",
-  "react": "^19.2.0",
-  "react-dom": "^19.2.0"
-}
+```env
+VITE_ENVIRONMENT=development
+VITE_PRAVITA_ADMIN_API_BASE_URL=http://localhost:9001
 ```
 
-- UI is built using components from `pravita-react-ds`.
-- The app provides the required peer dependencies (React + Mantine).
-- When the design system is updated and published, this app can upgrade via:
+The app reads these values from `src/env.ts`.
+
+## Running the backend locally
+
+The frontend expects the backend API at `http://localhost:9001`.
+
+### 1. Start the database
 
 ```bash
-pnpm update pravita-react-ds
-# or
-pnpm add pravita-react-ds@<specific-version>
+cd /Users/guevarra/workspace/pravita-hub-api
+docker compose -f docker-compose.db.yml up -d
 ```
 
----
+### 2. Run the API
 
-## 4. Project Structure (high level)
+If the backend repo does not already have its own `.env`, create one in `/Users/guevarra/workspace/pravita-hub-api` with at least:
 
-```txt
-src/
-  main.tsx        # App bootstrap, wraps <App /> with DSProvider
-  App.tsx         # Main layout / routing entry
-  components/     # App-specific components (if any)
-  pages/          # Feature pages (optional, if you add routing)
-  assets/         # Static assets
-  index.css       # Global styles
-
-vite.config.ts    # Vite config (includes base for GitHub Pages)
+```env
+POSTGRES_DB=pravitadb
+POSTGRES_USER=pravitauser
+POSTGRES_PASSWORD=pravitapass
+SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/pravitadb
+SPRING_DATASOURCE_USERNAME=pravitauser
+SPRING_DATASOURCE_PASSWORD=pravitapass
+JWT_SECRET=replace-with-a-real-secret
 ```
 
-Key integration points:
-
-- `src/main.tsx`:
-  - imports `@mantine/core/styles.css`
-  - imports `DSProvider` from `pravita-react-ds`
-  - renders `<DSProvider><App /></DSProvider>`
-
-- `src/App.tsx`:
-  - imports and uses `Button` (and other components) from `pravita-react-ds`.
-
----
-
-## 5. Scripts
-
-All commands are run from the project root:
+Then start the API:
 
 ```bash
-pnpm dev       # start Vite dev server
-pnpm build     # build for production
-pnpm preview   # locally preview production build
-pnpm lint      # run ESLint (if configured)
+cd /Users/guevarra/workspace/pravita-hub-api
+mvn spring-boot:run
 ```
 
-### Dev server
+Backend URLs:
+
+- API: `http://localhost:9001`
+- Swagger UI: `http://localhost:9001/swagger-ui.html`
+
+## Running the frontend locally
+
+Start the app:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
+pnpm dev
+```
+
+Open the URL printed by Vite, usually:
+
+- `http://localhost:5173`
+
+## Local admin login
+
+The backend seed data includes a default local admin account:
+
+```text
+Email: admin@pravita.com
+Password: Pravita123$$
+```
+
+Notes:
+
+- The seeded admin email is defined in the backend Liquibase changelog.
+- If this login does not work, your local database may contain older data. Recreate the local database and rerun the backend migrations.
+
+## Important local behavior
+
+- `pnpm dev` runs `pnpm openapi:generate` before starting Vite.
+- The OpenAPI client is generated from the checked-in file at `openapi/hub-api-docs.yaml`.
+- The frontend can start without the backend running, but login and API-backed pages will not work until the backend is available.
+
+## Useful commands
+
+From `/Users/guevarra/workspace/pravita-hub-app`:
+
+```bash
+pnpm dev
+pnpm build
+pnpm preview
+pnpm lint
+pnpm test
+pnpm typecheck
+```
+
+## Troubleshooting
+
+### `pnpm install` fails
+
+Check:
+
+- you have internet access
+- Git is installed
+- Node and `pnpm` versions meet the requirements
+
+### `pnpm dev` fails during OpenAPI generation
+
+Make sure dependencies installed correctly:
+
+```bash
+cd /Users/guevarra/workspace/pravita-hub-app
+pnpm install
+```
+
+Then retry:
 
 ```bash
 pnpm dev
 ```
 
-Open the URL printed in the terminal (usually `http://localhost:5173`).
+### The app loads but API requests fail
 
----
+Check:
 
-## 6. Using the Design System in the Hub App
+- the backend is running on `http://localhost:9001`
+- `.env.local` contains the correct `VITE_PRAVITA_ADMIN_API_BASE_URL`
+- the database container is up
 
-### Entry point: `main.tsx`
+### `docker compose` is not found
 
-Example structure:
+Open Docker Desktop and wait for it to finish starting, then rerun:
 
-```tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import '@mantine/core/styles.css';
-import './index.css';
-
-import App from './App';
-import { DSProvider } from 'pravita-react-ds';
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <DSProvider>
-      <App />
-    </DSProvider>
-  </React.StrictMode>,
-);
+```bash
+docker compose version
 ```
-
-### Using DS components in `App.tsx`
-
-```tsx
-import { Button } from 'pravita-react-ds';
-
-function App() {
-  return (
-    <main
-      style={{
-        padding: '24px',
-        fontFamily:
-          "'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
-      }}
-    >
-      <h1>Pravita Hub App</h1>
-      <p>This app is using the shared Pravita React Design System.</p>
-
-      <section
-        style={{
-          marginTop: '16px',
-          display: 'flex',
-          gap: '12px',
-        }}
-      >
-        <Button>Primary</Button>
-        <Button variant="secondary">Secondary</Button>
-        <Button variant="subtle">Subtle</Button>
-      </section>
-    </main>
-  );
-}
-
-export default App;
-```
----
-
-## 7. Updating the Design System Version
-
-When `pravita-react-ds` publishes a new version:
-
-1. In `pravita-hub-app/package.json`, bump the version:
-
-   ```json
-   "pravita-react-ds": "^0.2.0"
-   ```
-
-2. Install:
-
-   ```bash
-   pnpm install
-   ```
-
-3. Run:
-
-   ```bash
-   pnpm dev
-   ```
-
-4. If everything looks good, commit and push to trigger deployment.
-
----
-
-## 8. Development Workflow
-
-Typical local workflow:
-
-1. Make UI changes in **pravita-react-ds**
-2. Publish a new DS version (e.g. `0.2.0`)
-3. In **pravita-hub-app**:
-   - bump `pravita-react-ds` version
-   - `pnpm install`
-   - `pnpm dev` to verify
-4. Commit + push to `main` to deploy to GitHub Pages.
-
-```env
-# .env.local 
-API_BASE_URL=http://localhost:9001
-```
-
----
-
-## 10. Future Improvements
-
-- Shared routing/layout patterns via the design system
-- Tenant-based theming for Hub using DS tokens
-- Central auth and navigation components
-- CI checks (lint, tests) on push / PR
-- make the left nav route-aware (active state based on react-router), or 
-- add a collapsible sidebar for smaller screens.
